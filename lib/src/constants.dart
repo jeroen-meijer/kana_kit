@@ -1,4 +1,4 @@
-import 'package:kana_kit/src/extensions.dart';
+import 'package:kana_kit/src/utils.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -39,7 +39,7 @@ const jaPunctuationRanges = [
 ];
 
 // All Japanese unicode start and end ranges.
-// Includes kanji, kana, zenkaku latin chars, punctuations and number ranges.
+// Includes kanji, kana, zenkaku Latin chars, punctuations and number ranges.
 const japaneseRanges = [
   ...kanaRanges,
   ...jaPunctuationRanges,
@@ -91,4 +91,3 @@ const _kanaPunctuation = Tuple(0xff61, 0xff65);
 const _cjkSymbolsPunctuation = Tuple(0x3000, 0x303f);
 const _commonCjk = Tuple(0x4e00, 0x9fff);
 const _rareCjk = Tuple(0x3400, 0x4dbf);
-

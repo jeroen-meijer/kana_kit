@@ -1,144 +1,61 @@
-part of '../kana_kit.dart';
+// ignore_for_file: public_member_api_docs
+class Tuple<T1, T2> {
+  const Tuple(this.left, this.right);
 
-bool _isCharInRange(
-  String char, {
-  @required int start,
-  @required int end,
-}) {
-  assert(char.length == 1);
-
-  final code = char.code;
-  return start <= code && code <= end;
+  final T1 left;
+  final T2 right;
 }
 
-bool _isCharHiragana(String char) {
-  assert(char.length == 1);
-
-  return _isCharInRange(
-    char,
-    start: hiraganaStart,
-    end: hiraganaEnd,
-  );
+extension TupleListUtils<T1, T2> on List<Tuple<T1, T2>> {
+  List<T1> get allLefts => map((t) => t.left).toList();
+  List<T2> get allRights => map((t) => t.right).toList();
 }
 
-bool _isCharKatakana(String char) {
-  assert(char.length == 1);
-
-  return _isCharInRange(
-    char,
-    start: katakanaStart,
-    end: katakanaEnd,
-  );
+extension IterableUtils<T> on Iterable<T> {
+  /// Runs [reduce] but adds the current index.
+  T reduceWithIndex(T Function(T acc, T cur, int idx) combine) {
+    var idx = 0;
+    return reduce((acc, cur) {
+      idx++;
+      return combine(acc, cur, idx);
+    });
+  }
 }
 
-bool _isCharKanji(String char) {
-  assert(char.length == 1);
+extension StringUtils on String {
+  /// Returns a list of every character in this [String].
+  List<String> get chars => split('');
 
-  return _isCharInRange(
-    char,
-    start: kanjiStart,
-    end: kanjiEnd,
-  );
-}
+  /// Returns the reverse of this string.
+  ///
+  /// ```dart
+  /// "Hello".reversed; // "olleH"
+  /// ```
+  String get reversed => chars.reversed.join();
 
-bool _isCharUpperCase(String char) {
-  assert(char.length == 1);
+  /// The code unit for the first character in this [String].
+  ///
+  /// Shorthand for [codeUnitAt(0)].
+  int get code {
+    return codeUnitAt(0);
+  }
 
-  return char.isUpperCase ||
-      _isCharInRange(
-        char,
-        start: latinUppercaseStart,
-        end: latinUppercaseEnd,
-      );
-}
+  /// Indicates if this entire [String] only contains uppercase letters.
+  bool get isUpperCase {
+    return this == toUpperCase();
+  }
 
-bool _isCharLowerCase(String char) {
-  assert(char.length == 1);
+  /// Indicates if this entire [String] only contains lowercase letters.
+  bool get isLowerCase {
+    return this == toLowerCase();
+  }
 
-  return char.isLowerCase ||
-      _isCharInRange(
-        char,
-        start: latinLowercaseStart,
-        end: latinLowercaseEnd,
-      );
-}
+  /// Returns `true` if this string contains any of the [candidates].
+  bool containsAny(Iterable<String> candidates) {
+    if (candidates.isEmpty) {
+      return false;
+    }
 
-bool _isCharKana(String char) {
-  assert(char.length == 1);
-
-  return _isCharHiragana(char) || _isCharKatakana(char);
-}
-
-bool _isCharLongDash(String char) {
-  assert(char.length == 1);
-
-  return char.code == prolongedSoundMark;
-}
-
-bool _isCharSlashDot(String char) {
-  assert(char.length == 1);
-
-  return char.code == kanaSlashDot;
-}
-
-bool _isCharRomaji(String char) {
-  assert(char.length == 1);
-
-  return romajiRanges.any((range) {
-    return _isCharInRange(char, start: range.left, end: range.right);
-  });
-}
-
-bool _isCharEnglishPunctuation(String char) {
-  assert(char.length == 1);
-
-  return enPunctuationRanges.any((range) {
-    return _isCharInRange(char, start: range.left, end: range.right);
-  });
-}
-
-bool _isCharJapanesePunctuation(String char) {
-  assert(char.length == 1);
-
-  return jaPunctuationRanges.any((range) {
-    return _isCharInRange(char, start: range.left, end: range.right);
-  });
-}
-
-bool _isCharJapanese(String char) {
-  assert(char.length == 1);
-
-  return japaneseRanges.any((range) {
-    return _isCharInRange(char, start: range.left, end: range.right);
-  });
-}
-
-bool _isCharPunctuation(String char) {
-  assert(char.length == 1);
-
-  return _isCharEnglishPunctuation(char) || _isCharJapanesePunctuation(char);
-}
-
-bool _isCharConsonant(String char, {bool includeY = true}) {
-  assert(char.length == 1);
-  assert(includeY != null);
-
-  final consonants = [
-    ...'bcdfghjklmnpqrstvwxz'.chars,
-    if (includeY) 'y',
-  ];
-
-  return char.toLowerCase().containsAny(consonants);
-}
-
-bool _isCharVowel(String char, {bool includeY = true}) {
-  assert(char.length == 1);
-  assert(includeY != null);
-
-  final vowels = [
-    ...'aeiou'.chars,
-    if (includeY) 'y',
-  ];
-
-  return char.toLowerCase().containsAny(vowels);
+    return contains(candidates.first) || containsAny(candidates.skip(1));
+  }
 }

@@ -65,6 +65,25 @@ String _katakanaToHiragana(
   });
 }
 
+String _hiraganaToKatakana(String input) {
+  final kata = StringBuffer();
+
+  final chars = input.chars;
+  for (final char in chars) {
+    if (_isCharLongDash(char) || _isCharSlashDot(char)) {
+      kata.write(char);
+    } else if (_isCharHiragana(char)) {
+      final code = char.code + (katakanaStart - hiraganaStart);
+      final kataChar = String.fromCharCode(code);
+      kata.write(kataChar);
+    } else {
+      kata.write(char);
+    }
+  }
+
+  return kata.toString();
+}
+
 class _CharacterConversionToken extends Equatable {
   const _CharacterConversionToken(
     this.start,

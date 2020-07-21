@@ -5,13 +5,13 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:kana_kit/src/constants.dart';
-import 'package:kana_kit/src/extensions.dart';
+import 'package:kana_kit/src/utils.dart';
 import 'package:meta/meta.dart';
 
 export 'src/models/models.dart';
 
 part 'src/conversions.dart';
-part 'src/utils.dart';
+part 'src/checks.dart';
 
 /// {@template kana_kit}
 /// A Dart library for handling and converting Japanese characters such as
@@ -41,13 +41,13 @@ class KanaKit {
   final KanaKitConfig config;
 
   /// Tests if [input] consists entirely of romaji characters.
-  /// 
+  ///
   /// ```dart
   /// isRomaji('Tōkyō and Ōsaka'); // true
   /// isRomaji('12a*b&c-d'); // true
   /// isRomaji('あアA'); // false
   /// isRomaji('お願い'); // false
-  /// isRomaji('a！b&cーd') // false (zenkaku punctuation is not allowed)
+  /// isRomaji('a！b&cーd'); // false (zenkaku punctuation is not allowed)
   /// ```
   bool isRomaji(String input) {
     assert(input != null);
@@ -56,13 +56,13 @@ class KanaKit {
   }
 
   /// Tests if [input] consists entirely of Japanese characters.
-  /// 
+  ///
   /// ```dart
   /// isJapanese('泣き虫'); // true
   /// isJapanese('あア'); // true
-  /// isJapanese('２月') // true (zenkaku numbers are allowed)
-  /// isJapanese('泣き虫。！〜＄') // true (zenkaku/JA punctuation is allowed)
-  /// isJapanese('泣き虫.!~$') // false (latin punctuation is not allowed)
+  /// isJapanese('２月'); // true (zenkaku numbers are allowed)
+  /// isJapanese('泣き虫。！〜＄'); // true (zenkaku/JA punctuation is allowed)
+  /// isJapanese('泣き虫.!~\$'); // false (Latin punctuation is not allowed)
   /// isJapanese('A泣き虫'); // false
   /// ```
   bool isJapanese(String input) {
@@ -72,7 +72,7 @@ class KanaKit {
   }
 
   /// Tests if [input] consists entirely of kana characters.
-  /// 
+  ///
   /// ```dart
   /// isKana('あ'); // true
   /// isKana('ア'); // true
@@ -87,7 +87,7 @@ class KanaKit {
   }
 
   /// Tests if [input] consists entirely of hiragana characters.
-  /// 
+  ///
   /// ```dart
   /// isHiragana('げーむ'); // true
   /// isHiragana('A'); // false
@@ -100,11 +100,11 @@ class KanaKit {
   }
 
   /// Tests if [input] consists entirely of katakana characters.
-  /// 
+  ///
   /// ```dart
   /// isKatakana('ゲーム'); // true
-  /// isKatakana('あ'); // false
   /// isKatakana('A'); // false
+  /// isKatakana('あ'); // false
   /// isKatakana('あア'); // false
   /// ```
   bool isKatakana(String input) {
@@ -137,7 +137,6 @@ class KanaKit {
   /// isMixed('Abあア'); // true
   /// isMixed('お腹A') // With KanaKitConfig.passKanji == true: true
   /// isMixed('お腹A') // With KanaKitConfig.passKanji == false: false
-  /// isMixed('お腹A'); // false
   /// isMixed('ab'); // false
   /// isMixed('あア'); // false
   /// ```
@@ -194,36 +193,75 @@ class KanaKit {
   /// toKana('batsuge-mu'); // "ばつげーむ"
   /// toKana('!?.:/,~-‘’“”[](){}'); // "！？。：・、〜ー「」『』［］（）｛｝"
   /// ```
-  String toKana(String input) {}
+  String toKana(String input) {
+    final kanaTokens =
+        _MappingParser(config.romanization.romajiToKanaMap).apply(input);
+
+    return kanaTokens.map((kanaToken) {
+      final start = kanaToken.start;
+      final end = kanaToken.start;
+      final kana = kanaToken.value;
+
+      if (kana == null) {
+        return input.substring(start);
+      }
+      final enforceKatakana =
+          input.substring(start, end).chars.every(_isCharUpperCase);
+
+      return enforceKatakana ? _hiraganaToKatakana(kana) : kana;
+    }).join();
+  }
 
   /// Converts all characters of the [input] to hiragana.
+  ///
+  /// ```dart
+  /// toHiragana('toukyou, オオサカ'); // "とうきょう、　おおさか"
+  /// toHiragana('only カナ'); // With KanaKitConfig.passKanji == true: "only かな"
+  /// toHiragana('wi'); // "うぃ"
+  /// ```
   String toHiragana(String input) {
     assert(input != null);
 
-    final convertedToKatakana = _katakanaToHiragana(input, toRomaji: toRomaji);
+    final convertedToHiragana = _katakanaToHiragana(input, toRomaji: toRomaji);
+
+    if (config.passRomaji) {
+      return convertedToHiragana;
+    }
+
+    if (copyWithConfig(passRomaji: true).isMixed(input)) {
+      return toKana(convertedToHiragana.toLowerCase());
+    }
+
+    if (isRomaji(input) || _isCharEnglishPunctuation(input.chars.first)) {
+      return toKana(input.toLowerCase());
+    }
+
+    return convertedToHiragana;
+  }
+
+  /// Converts all characters of the [input] to katakana.
+  ///
+  /// ```dart
+  /// toKatakana('toukyou, おおさか'); // "トウキョウ、　オオサカ"
+  /// toKatakana('only かな'); // With KanaKitConfig.passKanji == true: "only カナ"
+  /// toKatakana('wi'); // "ウィ"
+  /// ```
+  String toKatakana(String input) {
+    assert(input != null);
+
+    final convertedToKatakana = _hiraganaToKatakana(input);
 
     if (config.passRomaji) {
       return convertedToKatakana;
     }
 
-    if (copyWithConfig(passRomaji: true).isMixed(input)) {
-      return toKana(convertedToKatakana.toLowerCase());
-    }
-
-    if (isRomaji(input) || _isCharEnglishPunctuation(input)) {
-      return toKana(input.toLowerCase());
+    if (isMixed(input) || isRomaji(input) || _isCharEnglishPunctuation(input)) {
+      final hiragana = toKana(input.toLowerCase());
+      return _hiraganaToKatakana(hiragana);
     }
 
     return convertedToKatakana;
   }
-
-  /*
-  // Conversion
-  toKatakana
-
-  // Other utils
-  stripOkurigana
-  */
 
   /// Creates a copy of this object that replaces the provided [KanaKitConfig]
   /// fields.

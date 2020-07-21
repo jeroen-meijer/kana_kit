@@ -38,4 +38,3 @@ class Romanization extends Equatable {
   @override
   List<Object> get props => [name];
 }
-

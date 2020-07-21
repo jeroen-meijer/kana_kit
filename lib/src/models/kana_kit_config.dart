@@ -17,8 +17,7 @@ class KanaKitConfig extends Equatable {
     @required this.passKanji,
     @required this.upcaseKatakana,
     @required this.romanization,
-  })  : 
-        assert(passRomaji != null),
+  })  : assert(passRomaji != null),
         assert(passKanji != null),
         assert(upcaseKatakana != null),
         assert(romanization != null);
@@ -40,7 +39,7 @@ class KanaKitConfig extends Equatable {
     romanization: Romanization.hepburn,
   );
 
-  /// Indicates whether to pass romaji when using mixed syllabaries with
+  /// Indicates whether to skip romaji characters when converting text using
   /// [KanaKit.toKatakana] or [KanaKit.toHiragana].
   ///
   ///
@@ -66,7 +65,8 @@ class KanaKitConfig extends Equatable {
   /// ```
   final bool upcaseKatakana;
 
-  /// The romanization map used for romanizing kana characters.
+  /// The romanization map used for converting to and from Japanese and Latin
+  /// characters.
   ///
   /// ```dart
   /// romanization: Romanizaion.hepburn,
