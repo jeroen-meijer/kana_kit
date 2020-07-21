@@ -1,3 +1,2 @@
-export 'ime_mode.dart';
 export 'kana_kit_config.dart';
-export 'romanization.dart';
+export 'romanization/romanization.dart';

@@ -13,53 +13,35 @@ import 'package:kana_kit/kana_kit.dart';
 class KanaKitConfig extends Equatable {
   /// {@macro kana_kit_config}
   const KanaKitConfig({
-    @required this.useObsoleteKana,
     @required this.passRomaji,
+    @required this.passKanji,
     @required this.upcaseKatakana,
-    @required this.customKanaMapping,
-    @required this.customRomajiMapping,
-    @required this.imeMode,
     @required this.romanization,
-  })  : assert(useObsoleteKana != null),
+  })  : 
         assert(passRomaji != null),
+        assert(passKanji != null),
         assert(upcaseKatakana != null),
-        assert(customKanaMapping != null),
-        assert(imeMode != null),
         assert(romanization != null);
 
   /// The default config for `KanaKit`.
   ///
   /// ```dart
   /// KanaKitConfig(
-  ///   useObsoleteKana: false,
   ///   passRomaji: false,
+  ///   passKanji: true,
   ///   upcaseKatakana: false,
-  ///   customKanaMapping: {},
-  ///   customRomajiMapping: {},
-  ///   imeMode: ImeMode.disabled,
   ///   romanization: Romanization.hepburn,
   /// )
   /// ```
   static const defaultConfig = KanaKitConfig(
-    useObsoleteKana: false,
     passRomaji: false,
+    passKanji: true,
     upcaseKatakana: false,
-    customKanaMapping: {},
-    customRomajiMapping: {},
-    imeMode: ImeMode.disabled,
     romanization: Romanization.hepburn,
   );
 
-  /// Indicates whether to use obsolete characters, such as ゐ and ゑ.
-  ///
-  ///
-  /// ```dart
-  /// useObsoleteKana: true
-  /// ```
-  final bool useObsoleteKana;
-
   /// Indicates whether to pass romaji when using mixed syllabaries with
-  /// `toKatakana()` or `toHiragana()`.
+  /// [KanaKit.toKatakana] or [KanaKit.toHiragana].
   ///
   ///
   /// ```dart
@@ -67,45 +49,22 @@ class KanaKitConfig extends Equatable {
   /// ```
   final bool passRomaji;
 
-  /// Indicates whether to convert katakana to uppercase using `toRomaji()`.
+  /// Indicates whether to ignore kanji when checking [KanaKit.isMixed].
+  ///
+  ///
+  /// ```dart
+  /// passRomaji: false
+  /// ```
+  final bool passKanji;
+
+  /// Indicates whether to convert katakana to uppercase using
+  /// [KanaKit.toRomaji].
   ///
   ///
   /// ```dart
   /// upcaseKatakana: true
   /// ```
   final bool upcaseKatakana;
-
-  /// The [ImeMode] to use for certain conversions.
-  ///
-  ///
-  /// ```dart
-  /// imeMode: ImeMode.toHiragana
-  /// ```
-  final ImeMode imeMode;
-
-  /// A custom map that maps single romaji characters to something else
-  /// (usually a kana character).
-  ///
-  ///
-  /// ```dart
-  ///  customKanaMapping: {
-  ///    'na': 'に',
-  ///    'ka': 'nana',
-  ///  }
-  /// ```
-  final Map<String, String> customKanaMapping;
-
-  /// A custom map that maps single kana characters to something else
-  /// (usually one or more romaji characters).
-  ///
-  /// ```dart
-  ///  customRomajiMapping: {
-  ///    'じ': 'zi',
-  ///    'つ': 'tu',
-  ///    'り': 'li',
-  ///  }
-  /// ```
-  final Map<String, String> customRomajiMapping;
 
   /// The romanization map used for romanizing kana characters.
   ///
@@ -116,33 +75,24 @@ class KanaKitConfig extends Equatable {
 
   /// Creates a copy of this object that replaces the provided fields.
   KanaKitConfig copyWith({
-    bool useObsoleteKana,
     bool passRomaji,
+    bool passKanji,
     bool upcaseKatakana,
-    ImeMode imeMode,
-    Map<String, String> customKanaMapping,
-    Map<String, String> customRomajiMapping,
     Romanization romanization,
   }) {
     return KanaKitConfig(
-      useObsoleteKana: useObsoleteKana ?? this.useObsoleteKana,
       passRomaji: passRomaji ?? this.passRomaji,
+      passKanji: passKanji ?? this.passKanji,
       upcaseKatakana: upcaseKatakana ?? this.upcaseKatakana,
-      imeMode: imeMode ?? this.imeMode,
-      customKanaMapping: customKanaMapping ?? this.customKanaMapping,
-      customRomajiMapping: customRomajiMapping ?? this.customRomajiMapping,
       romanization: romanization ?? this.romanization,
     );
   }
 
   @override
   List<Object> get props => [
-        useObsoleteKana,
         passRomaji,
+        passKanji,
         upcaseKatakana,
-        customKanaMapping,
-        customRomajiMapping,
-        imeMode,
         romanization,
       ];
 }
