@@ -27,3 +27,7 @@
 .pub-cache/
 .pub/
 build/
+
+**/coverage/
+**/coverage_badge.svg
+**/.test_coverage.dart

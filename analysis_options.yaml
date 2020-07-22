@@ -16,3 +16,5 @@ analyzer:
     implicit-casts: false
   errors:
     close_sinks: ignore
+  exclude:
+    - '**/.test_coverage.dart'
