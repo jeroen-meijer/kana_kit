@@ -23,7 +23,7 @@ extension IterableUtils<T> on Iterable<T> {
 }
 
 extension StringUtils on String {
-  /// Returns a list of every character in this [String].
+  /// Returns a list of every character in this `String`.
   List<String> get chars => split('');
 
   /// Returns the reverse of this string.
@@ -33,19 +33,19 @@ extension StringUtils on String {
   /// ```
   String get reversed => chars.reversed.join();
 
-  /// The code unit for the first character in this [String].
+  /// The code unit for the first character in this `String`.
   ///
   /// Shorthand for [codeUnitAt(0)].
   int get code {
     return codeUnitAt(0);
   }
 
-  /// Indicates if this entire [String] only contains uppercase letters.
+  /// Indicates if this entire `String` only contains uppercase letters.
   bool get isUpperCase {
     return this == toUpperCase();
   }
 
-  /// Indicates if this entire [String] only contains lowercase letters.
+  /// Indicates if this entire `String` only contains lowercase letters.
   bool get isLowerCase {
     return this == toLowerCase();
   }

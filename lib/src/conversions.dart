@@ -109,10 +109,10 @@ class _CharacterConversionToken extends Equatable {
 }
 
 /// Internal helper class that can take the [root] mapping and apply it to the
-/// given `input` [String].
+/// given `input` `String`.
 ///
 /// In other words, it takes a [Map<String, dynamic>] from [Romanization] and
-/// can convert a [String] from kana to romaji and vice versa.
+/// can convert a `String` from kana to romaji and vice versa.
 class _MappingParser {
   const _MappingParser(this.root);
 

@@ -1,18 +1,40 @@
+import 'dart:convert';
+
 import 'package:kana_kit/kana_kit.dart';
 import 'package:meta/meta.dart';
 import 'package:test/test.dart';
+
+import 'test_utils.dart';
 
 typedef Converter = String Function(String input);
 typedef ConverterTest = void Function({
   @required String input,
   @required String expected,
 });
+typedef ConverterAssertionTest = void Function(String input);
 
-ConverterTest testConversion(Converter converter) {
+ConverterTest testConverter(Converter converter) {
   return ({input, expected}) {
-    return test('"$input" becomes "$expected"', () {
-      expect(converter(input), expected);
-    });
+    return test(
+      '${formatInput(input)} becomes ${formatInput(expected)}',
+      () {
+        expect(converter(input), expected);
+      },
+    );
+  };
+}
+
+ConverterAssertionTest testConverterAssertion(Converter checker) {
+  return (input) {
+    return test(
+      'throws AssertionError when input is ${formatInput(input)}',
+      () {
+        expect(
+          () => checker(input),
+          throwsA(isA<AssertionError>()),
+        );
+      },
+    );
   };
 }
 
@@ -20,38 +42,46 @@ void main() {
   const kanaKit = KanaKit();
   group('conversions', () {
     group('toRomaji', () {
+      final testToRomajiAssertion = testConverterAssertion(kanaKit.toRomaji);
+      testToRomajiAssertion(null);
+
+      final testToRomaji = testConverter(kanaKit.toRomaji);
+      testToRomaji(input: '', expected: '');
+
       group('(upcaseKatakana: false)', () {
-        final testToRomaji = testConversion(
+        final testToRomajiWithoutUpcase = testConverter(
           kanaKit.copyWithConfig(upcaseKatakana: false).toRomaji,
         );
-        testToRomaji(
+        testToRomajiWithoutUpcase(
           input: 'ひらがな　カタカナ',
           expected: 'hiragana katakana',
         );
-        testToRomaji(
+        testToRomajiWithoutUpcase(
           input: 'げーむ　ゲーム',
           expected: 'ge-mu geemu',
         );
       });
       group('(upcaseKatakana: true)', () {
-        final testToRomaji = testConversion(
+        final testToRomajiWithUpcase = testConverter(
           kanaKit.copyWithConfig(upcaseKatakana: true).toRomaji,
         );
-        testToRomaji(
+        testToRomajiWithUpcase(
           input: 'ひらがな　カタカナ',
           expected: 'hiragana KATAKANA',
         );
-        testToRomaji(
+        testToRomajiWithUpcase(
           input: 'げーむ　ゲーム',
           expected: 'ge-mu GEEMU',
         );
       });
     });
     group('toKana', () {
-      final testToKana = testConversion(kanaKit.toKana);
-      // test('t', () {
-      //   expect(kanaKit.toKana('onaji BUTTSUUJI'), 'おなじ ブッツウジ');
-      // });
+      final testToKanaAssertion = testConverterAssertion(kanaKit.toKana);
+      testToKanaAssertion(null);
+
+      final testToKana = testConverter(kanaKit.toKana);
+      testToKana(input: '', expected: '');
+
       testToKana(
         input: 'onaji BUTTSUUJI',
         expected: 'おなじ　ブッツウジ',
@@ -75,36 +105,43 @@ void main() {
     });
 
     group('toHiragana', () {
+      final testToHiraganaAssertion =
+          testConverterAssertion(kanaKit.toHiragana);
+      testToHiraganaAssertion(null);
+
+      final testToHiragana = testConverter(kanaKit.toHiragana);
+      testToHiragana(input: '', expected: '');
+
       group('(passRomaji: false)', () {
-        final testToHiragana = testConversion(
+        final testToHiraganaWithRomaji = testConverter(
           kanaKit.copyWithConfig(passRomaji: false).toHiragana,
         );
-        testToHiragana(
+        testToHiraganaWithRomaji(
           input: 'toukyou, オオサカ',
           expected: 'とうきょう、　おおさか',
         );
-        testToHiragana(
+        testToHiraganaWithRomaji(
           input: 'only カナ',
           expected: 'おんly　かな',
         );
-        testToHiragana(
+        testToHiraganaWithRomaji(
           input: 'wi',
           expected: 'うぃ',
         );
       });
       group('(passRomaji: true)', () {
-        final testToHiragana = testConversion(
+        final testToHiraganaWithoutRomaji = testConverter(
           kanaKit.copyWithConfig(passRomaji: true).toHiragana,
         );
-        testToHiragana(
+        testToHiraganaWithoutRomaji(
           input: 'toukyou, オオサカ',
           expected: 'toukyou, おおさか',
         );
-        testToHiragana(
+        testToHiraganaWithoutRomaji(
           input: 'only カナ',
           expected: 'only かな',
         );
-        testToHiragana(
+        testToHiraganaWithoutRomaji(
           input: 'wi',
           expected: 'wi',
         );
@@ -112,36 +149,43 @@ void main() {
     });
 
     group('toKatakana', () {
+      final testToKatakanaAssertion =
+          testConverterAssertion(kanaKit.toKatakana);
+      testToKatakanaAssertion(null);
+
+      final testToKatakana = testConverter(kanaKit.toKatakana);
+      testToKatakana(input: '', expected: '');
+
       group('(passRomaji: false)', () {
-        final testToKatakana = testConversion(
+        final testToKatakanaWithRomaji = testConverter(
           kanaKit.copyWithConfig(passRomaji: false).toKatakana,
         );
-        testToKatakana(
+        testToKatakanaWithRomaji(
           input: 'toukyou, おおさか',
           expected: 'トウキョウ、　オオサカ',
         );
-        testToKatakana(
+        testToKatakanaWithRomaji(
           input: 'only かな',
           expected: 'オンly　カナ',
         );
-        testToKatakana(
+        testToKatakanaWithRomaji(
           input: 'wi',
           expected: 'ウィ',
         );
       });
       group('(passRomaji: true)', () {
-        final testToKatakana = testConversion(
+        final testToKatakanaWithoutRomaji = testConverter(
           kanaKit.copyWithConfig(passRomaji: true).toKatakana,
         );
-        testToKatakana(
+        testToKatakanaWithoutRomaji(
           input: 'toukyou, おおさか',
           expected: 'toukyou, オオサカ',
         );
-        testToKatakana(
+        testToKatakanaWithoutRomaji(
           input: 'only かな',
           expected: 'only カナ',
         );
-        testToKatakana(
+        testToKatakanaWithoutRomaji(
           input: 'wi',
           expected: 'wi',
         );

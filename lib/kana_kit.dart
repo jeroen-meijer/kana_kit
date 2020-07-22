@@ -40,6 +40,8 @@ class KanaKit {
 
   /// Tests if [input] consists entirely of romaji characters.
   ///
+  /// The [input] `String` cannot be null or empty.
+  ///
   /// ```dart
   /// isRomaji('Tōkyō and Ōsaka'); // true
   /// isRomaji('12a*b&c-d'); // true
@@ -49,11 +51,14 @@ class KanaKit {
   /// ```
   bool isRomaji(String input) {
     assert(input != null);
+    assert(input.isNotEmpty);
 
     return input.chars.every(_isCharRomaji);
   }
 
   /// Tests if [input] consists entirely of Japanese characters.
+  ///
+  /// The [input] `String` cannot be null or empty.
   ///
   /// ```dart
   /// isJapanese('泣き虫'); // true
@@ -65,11 +70,14 @@ class KanaKit {
   /// ```
   bool isJapanese(String input) {
     assert(input != null);
+    assert(input.isNotEmpty);
 
     return input.chars.every(_isCharJapanese);
   }
 
   /// Tests if [input] consists entirely of kana characters.
+  ///
+  /// The [input] `String` cannot be null or empty.
   ///
   /// ```dart
   /// isKana('あ'); // true
@@ -80,11 +88,14 @@ class KanaKit {
   /// ```
   bool isKana(String input) {
     assert(input != null);
+    assert(input.isNotEmpty);
 
     return input.chars.every(_isCharKana);
   }
 
   /// Tests if [input] consists entirely of hiragana characters.
+  ///
+  /// The [input] `String` cannot be null or empty.
   ///
   /// ```dart
   /// isHiragana('げーむ'); // true
@@ -93,11 +104,14 @@ class KanaKit {
   /// ```
   bool isHiragana(String input) {
     assert(input != null);
+    assert(input.isNotEmpty);
 
     return input.chars.every(_isCharHiragana);
   }
 
   /// Tests if [input] consists entirely of katakana characters.
+  ///
+  /// The [input] `String` cannot be null or empty.
   ///
   /// ```dart
   /// isKatakana('ゲーム'); // true
@@ -107,11 +121,14 @@ class KanaKit {
   /// ```
   bool isKatakana(String input) {
     assert(input != null);
+    assert(input.isNotEmpty);
 
     return input.chars.every(_isCharKatakana);
   }
 
   /// Tests if [input] consists entirely of kanji characters.
+  ///
+  /// The [input] `String` cannot be null or empty.
   ///
   /// ```dart
   /// isKanji('刀'); // true
@@ -122,6 +139,7 @@ class KanaKit {
   /// ```
   bool isKanji(String input) {
     assert(input != null);
+    assert(input.isNotEmpty);
 
     return input.chars.every(_isCharKanji);
   }
@@ -130,6 +148,8 @@ class KanaKit {
   ///
   /// If this [config]'s [KanaKitConfig.passKanji] is `true`, kanji will be
   /// ignored.
+  ///
+  /// The [input] `String` cannot be null or empty.
   ///
   /// ```dart
   /// isMixed('Abあア'); // true
@@ -140,6 +160,7 @@ class KanaKit {
   /// ```
   bool isMixed(String input) {
     assert(input != null);
+    assert(input.isNotEmpty);
 
     final chars = input.chars;
 
@@ -152,11 +173,19 @@ class KanaKit {
 
   /// Converts all kana characters of the [input] to romaji.
   ///
+  /// The [input] `String` cannot be null. If an empty `String` is provided,
+  /// an empty `String` will be returned immediately.
+  ///
   /// ```dart
   /// toRomaji('ひらがな　カタカナ'); // "hiragana katakana"
   /// toRomaji('げーむ　ゲーム'); // "ge-mu geemu"
   /// ```
   String toRomaji(String input) {
+    assert(input != null);
+    if (input.isEmpty) {
+      return input;
+    }
+
     final hiragana = _katakanaToHiragana(
       input,
       toRomaji: toRomaji,
@@ -184,6 +213,9 @@ class KanaKit {
   /// Lowercase text will result in hiragana and uppercase text will result in
   /// katakana.
   ///
+  /// The [input] `String` cannot be null. If an empty `String` is provided,
+  /// an empty `String` will be returned immediately.
+  ///
   /// ```dart
   /// toKana('onaji BUTTSUUJI'); // "おなじ ブッツウジ"
   /// toKana('ONAJI buttsuuji'); // "オナジ ぶっつうじ"
@@ -192,6 +224,11 @@ class KanaKit {
   /// toKana('!?.:/,~-‘’“”[](){}'); // "！？。：・、〜ー「」『』［］（）｛｝"
   /// ```
   String toKana(String input) {
+    assert(input != null);
+    if (input.isEmpty) {
+      return input;
+    }
+
     final kanaTokens = _MappingParser(config.romanization.romajiToKanaMap)
         .apply(input.toLowerCase());
 
@@ -212,6 +249,9 @@ class KanaKit {
 
   /// Converts all characters of the [input] to hiragana.
   ///
+  /// The [input] `String` cannot be null. If an empty `String` is provided,
+  /// an empty `String` will be returned immediately.
+  ///
   /// ```dart
   /// toHiragana('toukyou, オオサカ'); // "とうきょう、　おおさか"
   /// toHiragana('only カナ'); // With KanaKitConfig.passKanji == true: "only かな"
@@ -219,6 +259,9 @@ class KanaKit {
   /// ```
   String toHiragana(String input) {
     assert(input != null);
+    if (input.isEmpty) {
+      return input;
+    }
 
     final convertedToHiragana = _katakanaToHiragana(input, toRomaji: toRomaji);
 
@@ -239,6 +282,9 @@ class KanaKit {
 
   /// Converts all characters of the [input] to katakana.
   ///
+  /// The [input] `String` cannot be null. If an empty `String` is provided,
+  /// an empty `String` will be returned immediately.
+  ///
   /// ```dart
   /// toKatakana('toukyou, おおさか'); // "トウキョウ、　オオサカ"
   /// toKatakana('only かな'); // With KanaKitConfig.passKanji == true: "only カナ"
@@ -246,6 +292,9 @@ class KanaKit {
   /// ```
   String toKatakana(String input) {
     assert(input != null);
+    if (input.isEmpty) {
+      return input;
+    }
 
     final convertedToKatakana = _hiraganaToKatakana(input);
 
