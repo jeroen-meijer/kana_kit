@@ -1,6 +1,37 @@
-# KanaKit (カナ・キット)
+<div align="center">
+  <h1>KanaKit (かな・キット)</h1>
+  <h4>A Dart library for for detecting and transliterating Hiragana, Katakana, and Romaji.</h4>
+</div>
 
-A Dart library for for detecting and transliterating Hiragana, Katakana, and Romaji.
+<div align="center">
+  <a href="https://pub.dev/packages/kana_kit"
+    ><img alt="Pub Version" src="https://img.shields.io/pub/v/kana_kit"
+  /></a>
+  <a href="https://codecov.io/gh/jeroen-meijer/kana_kit"
+    ><img
+      alt="Codecov"
+      src="https://img.shields.io/codecov/c/github/jeroen-meijer/kana_kit"
+  /></a>
+  <a href="https://github.com/jeroen-meijer/kana_kit/commits/"
+    ><img
+      alt="GitHub last commit"
+      src="https://img.shields.io/github/last-commit/jeroen-meijer/kana_kit"
+  /></a>
+  <a href="https://github.com/jeroen-meijer/kana_kit/issues">
+    <img
+      alt="GitHub issues"
+      src="https://img.shields.io/github/issues/jeroen-meijer/kana_kit"
+    />
+  </a>
+  <a href="https://pub.dev/documentation/kana_kit/latest/">
+    <img
+      alt="Documentation"
+      src="https://img.shields.io/badge/read-the%20docs-blue"
+    />
+  </a>
+</div>
+
+---
 
 This library is mostly a direct port of [WaniKani's WanaKana JavaScript library](https://github.com/WaniKani/WanaKana).
 
@@ -16,7 +47,7 @@ It contains all available methods for detecting and converting Japanese text.
 // If no config is provided, KanaKitConfig.defaultConfig is used.
 const kanaKit = KanaKit();
 
-// String checks
+// Checks
 kanaKit.isJapanese('泣き虫。！～２￥ｚｅｎｋａｋｕ') // true
 
 kanaKit.isKana('あーア') // true
@@ -30,7 +61,7 @@ kanaKit.isKanji('勢い') // false
 
 kanaKit.isRomaji('Tōkyō and Ōsaka') // true
 
-// String converters
+// Converters
 kanaKit.toKana('ONAJI buttsuuji') // 'オナジ ぶっつうじ'
 kanaKit.toKana('座禅‘zazen’スタイル') // '座禅「ざぜん」スタイル'
 kanaKit.toKana('batsuge-mu') // 'ばつげーむ'
@@ -41,10 +72,9 @@ kanaKit.toKatakana('toukyou, おおさか') // 'トウキョウ、　オオサ�
 kanaKit.toRomaji('ひらがな　カタカナ') // 'hiragana katakana'
 
 // Use upcaseKatakana to capitalize characters that were converted from Katakana.s
-final kanaKitWithUpcaseKatakana = kanaKit(
-  upcaseKatakana: true,
-);
-kanaKitWithUpcaseKatakana.toRomaji('ひらがな　カタカナ') // 'hiragana KATAKANA'
+kanaKit
+  .copyWithConfig(upcaseKatakana: true)
+  .toRomaji('ひらがな　カタカナ') // 'hiragana KATAKANA'
 ```
 
 ### LICENSE
