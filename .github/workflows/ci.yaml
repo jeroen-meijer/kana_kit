@@ -26,11 +26,10 @@ jobs:
           credentialJson: ${{ secrets.CREDENTIAL_JSON }}
 
       - name: Compare versions
-        uses: k-paxian/dart-package-publisher@master
         if: ${{ steps.dry_run_publish.localVersion == steps.dry_run_publish.remoteVersion }}
         run: |
           echo "Local package version number and remote pub version number are the same. Update the local version number."
-          exit 0
+          exit 1
 
       - name: Format
         run: dartfmt --dry-run --set-exit-if-changed .
