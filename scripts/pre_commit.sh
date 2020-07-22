@@ -1,17 +1,21 @@
 #!/bin/sh
 
-echo "Running dartanalyzer..."
-dartanalyzer .
+set -e
+
 echo "Running dartfmt..."
 dartfmt -w .
+echo "Running dartanalyzer..."
+dartanalyzer --fatal-infos --fatal-warnings lib test
 echo "Running codecov..."
 rm -rf ./coverage
-pub run test_coverage --no-badge --min-coverage 99
+pub run test_coverage --min-coverage 99
 lcov --remove ./coverage/lcov.info -o ./coverage/filtered.info\
   '**/*.g.dart' \
   'lib/src/models/romanization/**'
 genhtml -o coverage ./coverage/filtered.info
 open ./coverage/index.html
+echo "Running dartdoc..."
+dartdoc
 
 echo ""
 echo "Done."

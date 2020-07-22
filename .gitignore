@@ -21,7 +21,10 @@
 #.vscode/
 
 # Dart/Pub related
+
 **/doc/api/
+!/doc/api/
+
 .dart_tool/
 .packages
 .pub-cache/

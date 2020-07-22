@@ -1,0 +1,41 @@
+name: ci
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  kana_kit:
+    runs-on: ubuntu-latest
+    container:
+      image: "google/dart:2.8.4"
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: pub get
+
+      - name: Format
+        run: dartfmt --dry-run --set-exit-if-changed .
+
+      - name: Analyze
+        run: dartanalyzer --fatal-infos --fatal-warnings lib test
+
+      - name: Test
+        run: pub run test_coverage --min-coverage 99
+
+      - name: Publish codecov
+        shell: bash
+        run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Check Code Coverage
+        uses: ChicagoFlutter/lcov-cop@v1.0.0
+        with:
+          path: ./coverage/lcov.info
+          exclude: "**/*.g.dart lib/src/models/romanization/**"
+
+      - name: Documentation
+        run: scripts/gen_docs.sh
