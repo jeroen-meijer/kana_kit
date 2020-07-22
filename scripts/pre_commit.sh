@@ -7,8 +7,10 @@ dartfmt -w .
 echo "Running codecov..."
 rm -rf ./coverage
 pub run test_coverage --no-badge --min-coverage 100
-lcov --remove ./coverage/lcov.info -o ./coverage/filtered.info
-genhtml -o coverage coverage/lcov.info
+lcov --remove ./coverage/lcov.info -o ./coverage/filtered.info\
+  '**/*.g.dart' \
+  'lib/src/models/romanization/**'
+genhtml -o coverage ./coverage/filtered.info
 open ./coverage/index.html
 
 echo ""
