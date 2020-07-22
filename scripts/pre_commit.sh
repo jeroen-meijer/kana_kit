@@ -12,8 +12,8 @@ lcov --remove ./coverage/lcov.info -o ./coverage/filtered.info\
   'lib/src/models/romanization/**'
 genhtml -o coverage ./coverage/filtered.info
 open ./coverage/index.html
-echo "Running dartdoc..."
-dartdoc
+echo "Running dry run publish..."
+pub publish --dry-run
 
 echo ""
 echo "Done."
