@@ -36,6 +36,7 @@ jobs:
         with:
           path: ./coverage/lcov.info
           exclude: "**/*.g.dart lib/src/models/romanization/**"
+          min_coverage: 99
 
       - name: Documentation
         run: scripts/gen_docs.sh
