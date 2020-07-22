@@ -14,4 +14,5 @@ jobs:
       - name: Publish to pub
         uses: k-paxian/dart-package-publisher@master
         with:
+          skipTests: true
           credentialJson: ${{ secrets.CREDENTIAL_JSON }}
