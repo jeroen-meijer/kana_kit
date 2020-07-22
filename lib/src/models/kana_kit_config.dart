@@ -52,7 +52,7 @@ class KanaKitConfig extends Equatable {
   ///
   ///
   /// ```dart
-  /// passRomaji: false
+  /// passKanji: false
   /// ```
   final bool passKanji;
 

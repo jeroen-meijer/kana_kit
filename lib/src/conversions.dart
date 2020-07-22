@@ -98,6 +98,9 @@ class _CharacterConversionToken extends Equatable {
   final String value;
 
   @override
+  String toString() => props.toString();
+
+  @override
   List<Object> get props => [
         start,
         end,
@@ -125,6 +128,7 @@ class _MappingParser {
     String nextChar,
   ) {
     final subtree = tree[nextChar];
+
     if (subtree == null) {
       return null;
     }
@@ -137,11 +141,11 @@ class _MappingParser {
     String remaining,
     int currentCursor,
   ) {
-    // start parsing a new chunk
+    // Start parsing a new chunk.
     final firstChar = remaining.chars.first;
 
     return _parse(
-      tree: {'': firstChar, ...root[firstChar]},
+      tree: {'': firstChar, ...(root[firstChar] ?? {})},
       remaining: remaining.substring(1),
       lastCursor: currentCursor,
       currentCursor: currentCursor + 1,
@@ -182,6 +186,7 @@ class _MappingParser {
     }
 
     // Continue parsing current branch.
+
     return _parse(
       tree: subtree,
       remaining: remaining.substring(1),

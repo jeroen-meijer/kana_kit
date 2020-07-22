@@ -1,10 +1,15 @@
 #!/bin/sh
-set -e
 
 echo "Running dartanalyzer..."
 dartanalyzer .
 echo "Running dartfmt..."
 dartfmt -w .
+echo "Running codecov..."
+rm -rf ./coverage
+pub run test_coverage --no-badge --min-coverage 100 &&
+lcov --remove ./coverage/lcov.info -o ./coverage/filtered.info &&
+genhtml -o coverage coverage/lcov.info &&
+open ./coverage/index.html
 
 echo ""
 echo "Done."

@@ -45,23 +45,11 @@ bool _isCharKanji(String char) {
 bool _isCharUpperCase(String char) {
   assert(char.length == 1);
 
-  return char.isUpperCase ||
-      _isCharInRange(
-        char,
-        start: latinUppercaseStart,
-        end: latinUppercaseEnd,
-      );
-}
-
-bool _isCharLowerCase(String char) {
-  assert(char.length == 1);
-
-  return char.isLowerCase ||
-      _isCharInRange(
-        char,
-        start: latinLowercaseStart,
-        end: latinLowercaseEnd,
-      );
+  return _isCharInRange(
+    char,
+    start: latinUppercaseStart,
+    end: latinUppercaseEnd,
+  );
 }
 
 bool _isCharKana(String char) {
@@ -98,48 +86,10 @@ bool _isCharEnglishPunctuation(String char) {
   });
 }
 
-bool _isCharJapanesePunctuation(String char) {
-  assert(char.length == 1);
-
-  return jaPunctuationRanges.any((range) {
-    return _isCharInRange(char, start: range.left, end: range.right);
-  });
-}
-
 bool _isCharJapanese(String char) {
   assert(char.length == 1);
 
   return japaneseRanges.any((range) {
     return _isCharInRange(char, start: range.left, end: range.right);
   });
-}
-
-bool _isCharPunctuation(String char) {
-  assert(char.length == 1);
-
-  return _isCharEnglishPunctuation(char) || _isCharJapanesePunctuation(char);
-}
-
-bool _isCharConsonant(String char, {bool includeY = true}) {
-  assert(char.length == 1);
-  assert(includeY != null);
-
-  final consonants = [
-    ...'bcdfghjklmnpqrstvwxz'.chars,
-    if (includeY) 'y',
-  ];
-
-  return char.toLowerCase().containsAny(consonants);
-}
-
-bool _isCharVowel(String char, {bool includeY = true}) {
-  assert(char.length == 1);
-  assert(includeY != null);
-
-  final vowels = [
-    ...'aeiou'.chars,
-    if (includeY) 'y',
-  ];
-
-  return char.toLowerCase().containsAny(vowels);
 }

@@ -1,7 +1,5 @@
 library kana_kit;
 
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:kana_kit/src/constants.dart';
@@ -147,7 +145,7 @@ class KanaKit {
 
     final hasRomaji = chars.any(_isCharRomaji);
     final hasKana = chars.any(_isCharHiragana) || chars.any(_isCharKatakana);
-    final hasKanji = config.passKanji || chars.any(_isCharKanji);
+    final hasKanji = !(!config.passKanji ? chars.any(_isCharKanji) : false);
 
     return hasKana && hasRomaji && hasKanji;
   }
@@ -168,7 +166,7 @@ class KanaKit {
 
     return romajiTokens.map((romajiToken) {
       final start = romajiToken.start;
-      final end = romajiToken.start;
+      final end = romajiToken.end;
       final romaji = romajiToken.value;
 
       final makeUpperCase =
@@ -194,12 +192,12 @@ class KanaKit {
   /// toKana('!?.:/,~-‘’“”[](){}'); // "！？。：・、〜ー「」『』［］（）｛｝"
   /// ```
   String toKana(String input) {
-    final kanaTokens =
-        _MappingParser(config.romanization.romajiToKanaMap).apply(input);
+    final kanaTokens = _MappingParser(config.romanization.romajiToKanaMap)
+        .apply(input.toLowerCase());
 
     return kanaTokens.map((kanaToken) {
       final start = kanaToken.start;
-      final end = kanaToken.start;
+      final end = kanaToken.end;
       final kana = kanaToken.value;
 
       if (kana == null) {
