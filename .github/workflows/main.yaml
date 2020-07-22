@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: pub get
 
       - name: Format
@@ -29,9 +29,9 @@ jobs:
 
       - name: Publish codecov
         shell: bash
-        run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+        run: bash <(curl -s https://codecov.io/bash)
 
-      - name: Check Code Coverage
+      - name: Check codecov
         uses: ChicagoFlutter/lcov-cop@v1.0.0
         with:
           path: ./coverage/lcov.info
@@ -39,4 +39,4 @@ jobs:
           min_coverage: 99
 
       - name: Documentation
-        run: scripts/gen_docs.sh
+        run: ./scripts/ci/gen_docs.sh
