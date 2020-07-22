@@ -1,0 +1,28 @@
+pull_request_rules:
+- name: "Assign author"
+  conditions: []
+  actions:
+    assign:
+      users:
+        - "{{author}}"
+- name: "Request review"
+  conditions: []
+  actions:
+    request_reviews:
+      users:
+        - "jeroen-meijer"
+- name: "Merge when CI passes"
+  conditions:
+    - "label!=wip"
+    - "status-success~=kana_kit"
+    - "#approved-reviews-by>=1"
+  actions: 
+    merge:
+      method: squash
+      strict: smart
+      commit_message: default
+- name: Delete branch post merge
+  conditions:
+    - merged
+  actions:
+    delete_head_branch: {}

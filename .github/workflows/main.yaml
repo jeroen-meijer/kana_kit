@@ -25,7 +25,7 @@ jobs:
         run: dartanalyzer --fatal-infos --fatal-warnings lib test
 
       - name: Test
-        run: pub run test_coverage --min-coverage 99
+        run: pub run test_coverage
 
       - name: Publish codecov
         shell: bash
