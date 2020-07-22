@@ -1,6 +1,5 @@
 library kana_kit;
 
-import 'package:equatable/equatable.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:kana_kit/src/constants.dart';
 import 'package:kana_kit/src/utils.dart';
@@ -176,9 +175,17 @@ class KanaKit {
   /// The [input] `String` cannot be null. If an empty `String` is provided,
   /// an empty `String` will be returned immediately.
   ///
+  /// If this [config]'s [KanaKitConfig.upcaseKatakana] is `true`, katakana
+  /// characters will be converted to uppercase characters.
+  /// ignored.
+  ///
   /// ```dart
+  /// // With KanaKitConfig.upcaseKatakana == false (default)
   /// toRomaji('ひらがな　カタカナ'); // "hiragana katakana"
   /// toRomaji('げーむ　ゲーム'); // "ge-mu geemu"
+  /// // With KanaKitConfig.upcaseKatakana == true
+  /// toRomaji('ひらがな　カタカナ'); // "hiragana KATAKANA"
+  /// toRomaji('げーむ　ゲーム'); // "ge-mu GEEMU"
   /// ```
   String toRomaji(String input) {
     assert(input != null);
@@ -189,6 +196,7 @@ class KanaKit {
     final hiragana = _katakanaToHiragana(
       input,
       toRomaji: toRomaji,
+      destinationIsRomaji: true,
     );
     final romajiTokens =
         _MappingParser(config.romanization.kanaToRomajiMap).apply(hiragana);
@@ -273,7 +281,9 @@ class KanaKit {
       return toKana(convertedToHiragana.toLowerCase());
     }
 
-    if (isRomaji(input) || _isCharEnglishPunctuation(input.chars.first)) {
+    final isSingleChar = input.length == 1;
+
+    if (isRomaji(input) || (isSingleChar && _isCharEnglishPunctuation(input))) {
       return toKana(input.toLowerCase());
     }
 
@@ -302,7 +312,11 @@ class KanaKit {
       return convertedToKatakana;
     }
 
-    if (isMixed(input) || isRomaji(input) || _isCharEnglishPunctuation(input)) {
+    final isSingleChar = input.length == 1;
+
+    if (isMixed(input) ||
+        isRomaji(input) ||
+        (isSingleChar && _isCharEnglishPunctuation(input))) {
       final hiragana = toKana(input.toLowerCase());
       return _hiraganaToKatakana(hiragana);
     }

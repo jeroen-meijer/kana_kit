@@ -4,6 +4,8 @@ String formatInput(String input) {
     return '$input';
   } else if (input.isEmpty) {
     return 'an empty string';
+  } else if (input.length == 1) {
+    return 'the character "$input"';
   } else {
     return '"$input"';
   }

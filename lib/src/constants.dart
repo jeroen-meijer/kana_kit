@@ -1,6 +1,7 @@
 import 'package:kana_kit/src/utils.dart';
 
 // ignore_for_file: public_member_api_docs
+// ignore_for_file: type_annotate_public_apis
 
 // Charcodes
 const latinLowercaseStart = 0x61;
@@ -40,7 +41,7 @@ const jaPunctuationRanges = [
 
 // All Japanese unicode start and end ranges.
 // Includes kanji, kana, zenkaku Latin chars, punctuations and number ranges.
-const japaneseRanges = [
+final japaneseRanges = [
   ...kanaRanges,
   ...jaPunctuationRanges,
   _zenkakuUppercase,
@@ -63,13 +64,13 @@ const smartQuoteRanges = [
   Tuple(0x201c, 0x201d), // “ ”
 ];
 
-const romajiRanges = [modernEnglish, ...hepburnMacronRanges];
+final romajiRanges = [modernEnglish, ...hepburnMacronRanges];
 
-const enPunctuationRanges = [
-  Tuple(0x20, 0x2f),
-  Tuple(0x3a, 0x3f),
-  Tuple(0x5b, 0x60),
-  Tuple(0x7b, 0x7e),
+final enPunctuationRanges = [
+  const Tuple(0x20, 0x2f),
+  const Tuple(0x3a, 0x3f),
+  const Tuple(0x5b, 0x60),
+  const Tuple(0x7b, 0x7e),
   ...smartQuoteRanges,
 ];
 

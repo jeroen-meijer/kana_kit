@@ -11,7 +11,7 @@ typedef CheckerTest = void Function({
 });
 typedef CheckerAssertionTest = void Function(String input);
 
-CheckerTest testChecker(Checker checker, String checkResultName) {
+CheckerTest checkerTest(Checker checker, String checkResultName) {
   return ({input, shouldPass}) {
     return test(
       '${formatInput(input)} is ${!shouldPass ? 'NOT ' : ''}$checkResultName',
@@ -22,7 +22,7 @@ CheckerTest testChecker(Checker checker, String checkResultName) {
   };
 }
 
-CheckerAssertionTest testCheckerAssertion(Checker checker) {
+CheckerAssertionTest checkerAssertionTest(Checker checker) {
   return (input) {
     return test(
       'throws AssertionError when input is ${formatInput(input)}',
@@ -40,45 +40,47 @@ void main() {
   const kanaKit = KanaKit();
   group('checks', () {
     group('isRomaji', () {
-      final testIsRomajiAssertion = testCheckerAssertion(kanaKit.isRomaji);
-      testIsRomajiAssertion(null);
-      testIsRomajiAssertion('');
+      final throwsAssertionErrorWithInputIs =
+          checkerAssertionTest(kanaKit.isRomaji);
+      throwsAssertionErrorWithInputIs(null);
+      throwsAssertionErrorWithInputIs('');
 
-      final testIsRomaji = testChecker(kanaKit.isRomaji, 'romaji');
-      testIsRomaji(input: 'A', shouldPass: true);
-      testIsRomaji(input: 'xYz', shouldPass: true);
-      testIsRomaji(input: 'Tōkyō and Ōsaka', shouldPass: true);
-      testIsRomaji(input: 'あアA', shouldPass: false);
-      testIsRomaji(input: 'お願い', shouldPass: false);
-      testIsRomaji(input: '熟成', shouldPass: false);
-      testIsRomaji(input: 'a*b&c-d', shouldPass: true);
-      testIsRomaji(input: '0123456789', shouldPass: true);
-      testIsRomaji(input: 'a！b&cーd', shouldPass: false);
-      testIsRomaji(input: 'ｈｅｌｌｏ', shouldPass: false);
+      final the = checkerTest(kanaKit.isRomaji, 'romaji');
+      the(input: 'A', shouldPass: true);
+      the(input: 'xYz', shouldPass: true);
+      the(input: 'Tōkyō and Ōsaka', shouldPass: true);
+      the(input: 'あアA', shouldPass: false);
+      the(input: 'お願い', shouldPass: false);
+      the(input: '熟成', shouldPass: false);
+      the(input: 'a*b&c-d', shouldPass: true);
+      the(input: '0123456789', shouldPass: true);
+      the(input: 'a！b&cーd', shouldPass: false);
+      the(input: 'ｈｅｌｌｏ', shouldPass: false);
     });
     group('isJapanese', () {
-      final testIsJapaneseAssertion = testCheckerAssertion(kanaKit.isJapanese);
-      testIsJapaneseAssertion(null);
-      testIsJapaneseAssertion('');
+      final throwsAssertionErrorWithInputIs =
+          checkerAssertionTest(kanaKit.isJapanese);
+      throwsAssertionErrorWithInputIs(null);
+      throwsAssertionErrorWithInputIs('');
 
-      final testIsJapanese = testChecker(kanaKit.isJapanese, 'japanese');
-      testIsJapanese(input: '泣き虫', shouldPass: true);
-      testIsJapanese(input: 'あア', shouldPass: true);
-      testIsJapanese(input: 'A泣き虫', shouldPass: false);
-      testIsJapanese(input: 'A', shouldPass: false);
-      testIsJapanese(input: '　', shouldPass: true);
-      testIsJapanese(input: ' ', shouldPass: false);
-      testIsJapanese(
+      final the = checkerTest(kanaKit.isJapanese, 'japanese');
+      the(input: '泣き虫', shouldPass: true);
+      the(input: 'あア', shouldPass: true);
+      the(input: 'A泣き虫', shouldPass: false);
+      the(input: 'A', shouldPass: false);
+      the(input: '　', shouldPass: true);
+      the(input: ' ', shouldPass: false);
+      the(
         input: '泣き虫。＃！〜〈〉《》〔〕［］【】（）｛｝〝〟',
         shouldPass: true,
       );
-      testIsJapanese(input: '泣き虫.!~', shouldPass: false);
-      testIsJapanese(input: '０１２３４５６７８９', shouldPass: true);
-      testIsJapanese(input: '0123456789', shouldPass: false);
-      testIsJapanese(input: 'ＭｅＴｏｏ', shouldPass: true);
-      testIsJapanese(input: '２０１１年', shouldPass: true);
-      testIsJapanese(input: 'ﾊﾝｶｸｶﾀｶﾅ', shouldPass: true);
-      testIsJapanese(
+      the(input: '泣き虫.!~', shouldPass: false);
+      the(input: '０１２３４５６７８９', shouldPass: true);
+      the(input: '0123456789', shouldPass: false);
+      the(input: 'ＭｅＴｏｏ', shouldPass: true);
+      the(input: '２０１１年', shouldPass: true);
+      the(input: 'ﾊﾝｶｸｶﾀｶﾅ', shouldPass: true);
+      the(
         input: '＃ＭｅＴｏｏ、これを前に「ＫＵＲＯＳＨＩＯ」は、'
             '都内で報道陣を前に水中探査ロボットの最終点検の様子を公開しました。'
             'イルカのような形をした探査ロボットは、全長３メートル、'
@@ -98,100 +100,105 @@ void main() {
       );
     });
     group('isKana', () {
-      final testIsKanaAssertion = testCheckerAssertion(kanaKit.isKana);
-      testIsKanaAssertion(null);
-      testIsKanaAssertion('');
+      final throwsAssertionErrorWithInputIs =
+          checkerAssertionTest(kanaKit.isKana);
+      throwsAssertionErrorWithInputIs(null);
+      throwsAssertionErrorWithInputIs('');
 
-      final testIsKana = testChecker(kanaKit.isKana, 'kana');
-      testIsKana(input: 'あ', shouldPass: true);
-      testIsKana(input: 'ア', shouldPass: true);
-      testIsKana(input: 'あア', shouldPass: true);
-      testIsKana(input: 'A', shouldPass: false);
-      testIsKana(input: 'あAア', shouldPass: false);
-      testIsKana(input: 'アーあ', shouldPass: true);
+      final the = checkerTest(kanaKit.isKana, 'kana');
+      the(input: 'あ', shouldPass: true);
+      the(input: 'ア', shouldPass: true);
+      the(input: 'あア', shouldPass: true);
+      the(input: 'A', shouldPass: false);
+      the(input: 'あAア', shouldPass: false);
+      the(input: 'アーあ', shouldPass: true);
     });
     group('isHiragana', () {
-      final testIsHiraganaAssertion = testCheckerAssertion(kanaKit.isHiragana);
-      testIsHiraganaAssertion(null);
-      testIsHiraganaAssertion('');
+      final throwsAssertionErrorWithInputIs =
+          checkerAssertionTest(kanaKit.isHiragana);
+      throwsAssertionErrorWithInputIs(null);
+      throwsAssertionErrorWithInputIs('');
 
-      final testIsHiragana = testChecker(kanaKit.isHiragana, 'hiragana');
-      testIsHiragana(input: 'あ', shouldPass: true);
-      testIsHiragana(input: 'ああ', shouldPass: true);
-      testIsHiragana(input: 'ア', shouldPass: false);
-      testIsHiragana(input: 'A', shouldPass: false);
-      testIsHiragana(input: 'あア', shouldPass: false);
-      testIsHiragana(input: 'げーむ', shouldPass: true);
+      final the = checkerTest(kanaKit.isHiragana, 'hiragana');
+      the(input: 'あ', shouldPass: true);
+      the(input: 'ああ', shouldPass: true);
+      the(input: 'ア', shouldPass: false);
+      the(input: 'A', shouldPass: false);
+      the(input: 'あア', shouldPass: false);
+      the(input: 'げーむ', shouldPass: true);
     });
     group('isKatakana', () {
-      final testIsKatakanaAssertion = testCheckerAssertion(kanaKit.isKatakana);
-      testIsKatakanaAssertion(null);
-      testIsKatakanaAssertion('');
+      final throwsAssertionErrorWithInputIs =
+          checkerAssertionTest(kanaKit.isKatakana);
+      throwsAssertionErrorWithInputIs(null);
+      throwsAssertionErrorWithInputIs('');
 
-      final testIsKatakana = testChecker(kanaKit.isKatakana, 'katakana');
-      testIsKatakana(input: 'アア', shouldPass: true);
-      testIsKatakana(input: 'ア', shouldPass: true);
-      testIsKatakana(input: 'あ', shouldPass: false);
-      testIsKatakana(input: 'A', shouldPass: false);
-      testIsKatakana(input: 'あア', shouldPass: false);
-      testIsKatakana(input: 'ゲーム', shouldPass: true);
+      final the = checkerTest(kanaKit.isKatakana, 'katakana');
+      the(input: 'アア', shouldPass: true);
+      the(input: 'ア', shouldPass: true);
+      the(input: 'あ', shouldPass: false);
+      the(input: 'A', shouldPass: false);
+      the(input: 'あア', shouldPass: false);
+      the(input: 'ゲーム', shouldPass: true);
     });
 
     group('isKanji', () {
-      final testIsKanjiAssertion = testCheckerAssertion(kanaKit.isKanji);
-      testIsKanjiAssertion(null);
-      testIsKanjiAssertion('');
+      final throwsAssertionErrorWithInputIs =
+          checkerAssertionTest(kanaKit.isKanji);
+      throwsAssertionErrorWithInputIs(null);
+      throwsAssertionErrorWithInputIs('');
 
-      final testIsKanji = testChecker(kanaKit.isKanji, 'kanji');
-      testIsKanji(input: '切腹', shouldPass: true);
-      testIsKanji(input: '刀', shouldPass: true);
-      testIsKanji(input: '🐸', shouldPass: false);
-      testIsKanji(input: 'あ', shouldPass: false);
-      testIsKanji(input: 'ア', shouldPass: false);
-      testIsKanji(input: 'あア', shouldPass: false);
-      testIsKanji(input: 'A', shouldPass: false);
-      testIsKanji(input: 'あAア', shouldPass: false);
-      testIsKanji(input: '１２隻', shouldPass: false);
-      testIsKanji(input: '12隻', shouldPass: false);
-      testIsKanji(input: '隻。', shouldPass: false);
-      testIsKanji(input: '🐸', shouldPass: false);
+      final the = checkerTest(kanaKit.isKanji, 'kanji');
+      the(input: '切腹', shouldPass: true);
+      the(input: '刀', shouldPass: true);
+      the(input: '🐸', shouldPass: false);
+      the(input: 'あ', shouldPass: false);
+      the(input: 'ア', shouldPass: false);
+      the(input: 'あア', shouldPass: false);
+      the(input: 'A', shouldPass: false);
+      the(input: 'あAア', shouldPass: false);
+      the(input: '１２隻', shouldPass: false);
+      the(input: '12隻', shouldPass: false);
+      the(input: '隻。', shouldPass: false);
+      the(input: '🐸', shouldPass: false);
     });
     group('isMixed', () {
-      final testIsMixedAssertion = testCheckerAssertion(kanaKit.isMixed);
-      testIsMixedAssertion(null);
-      testIsMixedAssertion('');
+      final throwsAssertionErrorWithInputIs =
+          checkerAssertionTest(kanaKit.isMixed);
+      throwsAssertionErrorWithInputIs(null);
+      throwsAssertionErrorWithInputIs('');
 
       group('(passKanji: true)', () {
-        final testIsMixed = testChecker(
+        final the = checkerTest(
           kanaKit.copyWithConfig(passKanji: true).isMixed,
           'mixed',
         );
-        testIsMixed(input: 'Aア', shouldPass: true);
-        testIsMixed(input: 'Aあ', shouldPass: true);
-        testIsMixed(input: 'Aあア', shouldPass: true);
-        testIsMixed(input: '２あア', shouldPass: false);
-        testIsMixed(input: 'お腹A', shouldPass: true);
-        testIsMixed(input: 'お腹', shouldPass: false);
-        testIsMixed(input: '腹', shouldPass: false);
-        testIsMixed(input: 'A', shouldPass: false);
-        testIsMixed(input: 'あ', shouldPass: false);
-        testIsMixed(input: 'ア', shouldPass: false);
+        the(input: 'Aア', shouldPass: true);
+        the(input: 'Aあ', shouldPass: true);
+        the(input: 'Aあア', shouldPass: true);
+        the(input: '２あア', shouldPass: false);
+        the(input: 'お腹A', shouldPass: true);
+        the(input: 'お腹', shouldPass: false);
+        the(input: '腹', shouldPass: false);
+        the(input: 'A', shouldPass: false);
+        the(input: 'あ', shouldPass: false);
+        the(input: 'ア', shouldPass: false);
       });
       group('(passKanji: false)', () {
-        final testIsMixed = testChecker(
+        final the = checkerTest(
           kanaKit.copyWithConfig(passKanji: false).isMixed,
           'mixed',
         );
-        testIsMixed(input: 'Aア', shouldPass: true);
-        testIsMixed(input: 'Aあ', shouldPass: true);
-        testIsMixed(input: 'Aあア', shouldPass: true);
-        testIsMixed(input: '２あア', shouldPass: false);
-        testIsMixed(input: 'お腹A', shouldPass: false);
-        testIsMixed(input: 'お腹', shouldPass: false);
-        testIsMixed(input: '腹', shouldPass: false);
-        testIsMixed(input: 'A', shouldPass: false);
-        testIsMixed(input: 'あ', shouldPass: false);
-        testIsMixed(input: 'ア', shouldPass: false);
+        the(input: 'Aア', shouldPass: true);
+        the(input: 'Aあ', shouldPass: true);
+        the(input: 'Aあア', shouldPass: true);
+        the(input: '２あア', shouldPass: false);
+        the(input: 'お腹A', shouldPass: false);
+        the(input: 'お腹', shouldPass: false);
+        the(input: '腹', shouldPass: false);
+        the(input: 'A', shouldPass: false);
+        the(input: 'あ', shouldPass: false);
+        the(input: 'ア', shouldPass: false);
       });
     });
   });

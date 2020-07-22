@@ -1,9 +1,10 @@
 part of '../kana_kit.dart';
 
+/// Internal function that converts an a katakana [input] to hiragana.
 String _katakanaToHiragana(
   String input, {
   @required String Function(String) toRomaji,
-  bool isDestinationRomaji = false,
+  bool destinationIsRomaji = false,
 }) {
   bool isCharInitialLongDash(String char, int index) {
     assert(char.length == 1);
@@ -33,12 +34,16 @@ String _katakanaToHiragana(
 
   var previousKana = '';
 
-  return input.chars.reduceWithIndex((hira, char, index) {
+  final chars = input.chars;
+  final hiraChars = <String>[];
+  for (var index = 0; index < chars.length; index++) {
+    final char = chars[index];
     // Short circuit to avoid incorrect codeshift for 'ー' and '・'.
     if (_isCharSlashDot(char) ||
         isCharInitialLongDash(char, index) ||
         isKanaAsSymbol(char)) {
-      return '$hira$char';
+      hiraChars.add(char);
+      continue;
       // Transform long vowels: 'オー' to 'おう'.
     } else if (previousKana.isNotEmpty && isCharInnerLongDash(char, index)) {
       // Transform previousKana back to romaji, and slice off the vowel.
@@ -47,24 +52,30 @@ String _katakanaToHiragana(
       // way to romaji.
       if (_isCharKatakana(input[index - 1]) &&
           romaji == 'o' &&
-          isDestinationRomaji) {
-        return '$hiraお';
+          destinationIsRomaji) {
+        hiraChars.add('お');
+        continue;
       }
-      return '$hira${longVowels[romaji]}';
+      hiraChars.add(longVowels[romaji]);
+      continue;
     } else if (!_isCharLongDash(char) && _isCharKatakana(char)) {
       // Shift charcode.
       final code = char.code + (hiraganaStart - katakanaStart);
       final hiraChar = String.fromCharCode(code);
       previousKana = hiraChar;
-      return '$hira$hiraChar';
+      hiraChars.add(hiraChar);
+      continue;
     }
 
     // Pass non-katakana chars through.
     previousKana = '';
-    return '$hira$char';
-  });
+    hiraChars.add(char);
+  }
+
+  return hiraChars.join();
 }
 
+/// Internal function that converts an a hiragana [input] to katakana.
 String _hiraganaToKatakana(String input) {
   final kata = StringBuffer();
 
@@ -84,28 +95,27 @@ String _hiraganaToKatakana(String input) {
   return kata.toString();
 }
 
-class _CharacterConversionToken extends Equatable {
+/// An internal data class that represents the conversion of one or more
+/// characters from a `String` to a new [value] after calling
+/// [_MappingParser.apply] on a character map (such as
+/// [Romanization.kanaToRomajiMap]).
+class _CharacterConversionToken {
   const _CharacterConversionToken(
     this.start,
     this.end,
     this.value,
-  )   : assert(start != null),
-        assert(end != null),
-        assert(value != null);
+  );
 
+  /// The starting index of the character from the original `String` that has
+  /// been mapped to [value].
   final int start;
+
+  /// The last index of the character from the original `String` that has
+  /// been mapped to [value].
   final int end;
+
+  /// The result of mapping the original `String` from [start] to [end].
   final String value;
-
-  @override
-  String toString() => props.toString();
-
-  @override
-  List<Object> get props => [
-        start,
-        end,
-        value,
-      ];
 }
 
 /// Internal helper class that can take the [root] mapping and apply it to the
@@ -118,7 +128,9 @@ class _MappingParser {
 
   final Map<String, dynamic> root;
 
-  /// Applies this
+  /// Applies the [root] to the [input].
+  ///
+  /// In other words, converts the [input] using the [root] mapping.
   List<_CharacterConversionToken> apply(String input) {
     return _newChunk(input, 0);
   }

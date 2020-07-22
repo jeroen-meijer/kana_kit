@@ -1,27 +1,35 @@
-// ignore_for_file: public_member_api_docs
-class Tuple<T1, T2> {
+import 'package:equatable/equatable.dart';
+
+/// {@template tuple}
+/// A data class that contains two elements ([left] and [right]).
+/// {@endtemplate}
+class Tuple<T1, T2> extends Equatable {
+  /// {@macro tuple}
   const Tuple(this.left, this.right);
 
+  /// The first element.
   final T1 left;
+
+  /// The second element.
   final T2 right;
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object> get props => [left, right];
 }
 
-extension TupleListUtils<T1, T2> on List<Tuple<T1, T2>> {
-  List<T1> get allLefts => map((t) => t.left).toList();
-  List<T2> get allRights => map((t) => t.right).toList();
+/// Extensions that make handling collections of [Tuple]s more convenient.
+extension TupleIterableUtils<T1, T2> on Iterable<Tuple<T1, T2>> {
+  /// Returns a new [Iterator<T1>] that contains all `left` elements.
+  Iterable<T1> get allLefts => map((t) => t.left);
+
+  /// Returns a new [Iterator<T2>] that contains all `right` elements.
+  Iterable<T2> get allRights => map((t) => t.right);
 }
 
-extension IterableUtils<T> on Iterable<T> {
-  /// Runs [reduce] but adds the current index.
-  T reduceWithIndex(T Function(T acc, T cur, int idx) combine) {
-    var idx = 0;
-    return reduce((acc, cur) {
-      idx++;
-      return combine(acc, cur, idx);
-    });
-  }
-}
-
+/// Extensions that make handling [String]s more convenient.
 extension StringUtils on String {
   /// Returns a list of every character in this `String`.
   List<String> get chars => split('');

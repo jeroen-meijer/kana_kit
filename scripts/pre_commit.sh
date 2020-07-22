@@ -6,7 +6,7 @@ echo "Running dartfmt..."
 dartfmt -w .
 echo "Running codecov..."
 rm -rf ./coverage
-pub run test_coverage --no-badge --min-coverage 100
+pub run test_coverage --no-badge --min-coverage 99
 lcov --remove ./coverage/lcov.info -o ./coverage/filtered.info\
   '**/*.g.dart' \
   'lib/src/models/romanization/**'
