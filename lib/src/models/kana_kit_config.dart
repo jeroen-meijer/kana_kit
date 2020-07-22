@@ -16,11 +16,10 @@ class KanaKitConfig extends Equatable {
     @required this.passRomaji,
     @required this.passKanji,
     @required this.upcaseKatakana,
-    @required this.romanization,
   })  : assert(passRomaji != null),
         assert(passKanji != null),
         assert(upcaseKatakana != null),
-        assert(romanization != null);
+        romanization = Romanization.hepburn;
 
   /// The default config for `KanaKit`.
   ///
@@ -36,7 +35,6 @@ class KanaKitConfig extends Equatable {
     passRomaji: false,
     passKanji: true,
     upcaseKatakana: false,
-    romanization: Romanization.hepburn,
   );
 
   /// Indicates whether to skip romaji characters when converting text using
@@ -78,13 +76,11 @@ class KanaKitConfig extends Equatable {
     bool passRomaji,
     bool passKanji,
     bool upcaseKatakana,
-    Romanization romanization,
   }) {
     return KanaKitConfig(
       passRomaji: passRomaji ?? this.passRomaji,
       passKanji: passKanji ?? this.passKanji,
       upcaseKatakana: upcaseKatakana ?? this.upcaseKatakana,
-      romanization: romanization ?? this.romanization,
     );
   }
 

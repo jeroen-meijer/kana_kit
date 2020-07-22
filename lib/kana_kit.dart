@@ -316,14 +316,12 @@ class KanaKit {
     bool passRomaji,
     bool passKanji,
     bool upcaseKatakana,
-    Romanization romanization,
   }) {
     return KanaKit(
       config: KanaKitConfig(
         passRomaji: passRomaji ?? config.passRomaji,
         passKanji: passKanji ?? config.passKanji,
         upcaseKatakana: upcaseKatakana ?? config.upcaseKatakana,
-        romanization: romanization ?? config.romanization,
       ),
     );
   }
