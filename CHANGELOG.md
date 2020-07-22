@@ -1,3 +1,9 @@
-## [0.0.1] - TODO: Add release date.
+## [1.0.1] - 2020-07-22
 
-* TODO: Describe initial release.
+- Initial pub release.
+- Improved README.
+- Added pub publishing CI workflow.
+
+## [1.0.0] - 2020-07-22
+
+- Initial release 🎉

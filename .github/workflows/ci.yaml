@@ -18,6 +18,20 @@ jobs:
       - name: Install dependencies
         run: pub get
 
+      - name: Dry run publish
+        id: dry_run_publish
+        uses: k-paxian/dart-package-publisher@master
+        with:
+          dryRunOnly: true
+          credentialJson: ${{ secrets.CREDENTIAL_JSON }}
+
+      - name: Compare versions
+        uses: k-paxian/dart-package-publisher@master
+        if: ${{ steps.dry_run_publish.localVersion == steps.dry_run_publish.remoteVersion }}
+        run: |
+          echo "Local package version number and remote pub version number are the same. Update the local version number."
+          exit 0
+
       - name: Format
         run: dartfmt --dry-run --set-exit-if-changed .
 
@@ -37,3 +51,5 @@ jobs:
           path: ./coverage/lcov.info
           exclude: "**/*.g.dart lib/src/models/romanization/**"
           min_coverage: 99
+
+          name: Publish plugin
