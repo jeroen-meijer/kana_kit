@@ -1,6 +1,6 @@
-## FAULTY VERSION ON PURPOSE
+## 1.0.3+2
 
-- Replace publishing CI step.
+- Replace publishing CI step with custom script.
 - Minor README change.
 
 ## 1.0.3
