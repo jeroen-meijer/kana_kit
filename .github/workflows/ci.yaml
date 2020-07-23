@@ -17,14 +17,6 @@ jobs:
       - name: Install dependencies
         run: pub get
 
-      - name: Dry run publish
-        uses: sakebook/actions-flutter-pub-publisher@v1.3.1
-        with:
-          dry_run: true
-          skip_test: true
-          flutter_package: false
-          credential: ${{ secrets.CREDENTIAL_JSON }}
-
       - name: Format
         run: dartfmt --dry-run --set-exit-if-changed .
 
@@ -33,6 +25,14 @@ jobs:
 
       - name: Test
         run: pub run test_coverage
+
+      - name: Dry run publish
+        run: |
+          echo "Copy credentials"
+          mkdir -p ~/.pub-cache
+          cat ${{ secrets.CREDENTIAL_JSON }} > ~/.pub-cache/credentials.json
+          echo "Run pub publish --dry-run"
+          pub publish --dry-run
 
       - name: Publish codecov
         shell: bash

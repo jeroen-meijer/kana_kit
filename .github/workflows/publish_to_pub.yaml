@@ -11,8 +11,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Publish
-        uses: sakebook/actions-flutter-pub-publisher@v1.3.1
-        with:
-          skip_test: true
-          flutter_package: false
-          credential: ${{ secrets.CREDENTIAL_JSON }}
+        run: |
+          echo "Copy credentials"
+          mkdir -p ~/.pub-cache
+          cat ${{ secrets.CREDENTIAL_JSON }} > ~/.pub-cache/credentials.json
+          echo "Run pub publish"
+          pub publish

@@ -20,6 +20,6 @@
 - Improved README.
 - Added pub publishing CD workflow.
 
-## [1.0.0
+## 1.0.0
 
 - Initial release 🎉
