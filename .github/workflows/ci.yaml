@@ -7,9 +7,9 @@ on:
 
 jobs:
   kana_kit:
+    runs-on: ubuntu-latest
     container:
       image: google/dart:2.8.4
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
