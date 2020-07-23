@@ -1,6 +1,8 @@
 ## 1.0.3+2
 
+- Add example.
 - Replace publishing CI step with custom script.
+- Remove homepage from pubspec.
 - Minor README change.
 
 ## 1.0.3
