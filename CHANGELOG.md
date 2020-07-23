@@ -1,5 +1,6 @@
-## 1.0.4
+## FAULTY VERSION ON PURPOSE
 
+- Replace publishing CI step.
 - Minor README change.
 
 ## 1.0.3

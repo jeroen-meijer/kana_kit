@@ -1,4 +1,4 @@
-name: publish_to_pub
+name: Publish
 on:
   release:
     types: [published]
@@ -10,18 +10,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Publish to pub
-        id: publish
-        uses: k-paxian/dart-package-publisher@master
+      - name: Publish
+        uses: sakebook/actions-flutter-pub-publisher@v1.3.1
         with:
-          skipTests: true
-          credentialJson: ${{ secrets.CREDENTIAL_JSON }}
-
-      - name: Verify published
-        run: |
-          if [ "${{steps.publish.outputs.success}}" = "false" ]; then
-            echo "Publishing failed."
-            exit 1
-          else
-            exit 0
-          fi
+          skip_test: true
+          flutter_package: false
+          credential: ${{ secrets.CREDENTIAL_JSON }}

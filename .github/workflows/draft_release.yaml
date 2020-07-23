@@ -1,4 +1,4 @@
-name: draft_release
+name: Draft Release
 on:
   push:
     branches:
@@ -10,7 +10,8 @@ jobs:
     container:
       image: google/dart:2.8.4
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Add pub executables to path
         run: echo "::add-path::$HOME/.pub-cache/bin"

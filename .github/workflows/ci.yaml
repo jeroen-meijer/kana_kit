@@ -1,4 +1,4 @@
-name: ci
+name: CI
 on:
   workflow_dispatch:
   pull_request:
@@ -11,10 +11,19 @@ jobs:
     container:
       image: google/dart:2.8.4
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Install dependencies
         run: pub get
+
+      - name: Dry run publish
+        uses: sakebook/actions-flutter-pub-publisher@v1.3.1
+        with:
+          dry_run: true
+          skip_test: true
+          flutter_package: false
+          credential: ${{ secrets.CREDENTIAL_JSON }}
 
       - name: Format
         run: dartfmt --dry-run --set-exit-if-changed .
