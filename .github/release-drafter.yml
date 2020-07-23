@@ -1,0 +1,7 @@
+name-template: "v$RESOLVED_VERSION 🌈"
+tag-template: "$RESOLVED_VERSION"
+change-template: "- $TITLE (#$NUMBER)"
+template: |
+  ## What’s Changed
+
+  $CHANGES

@@ -1,0 +1,26 @@
+name: draft_release
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  update_release_draft:
+    runs-on: ubuntu-latest
+    container:
+      image: google/dart:2.8.4
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: get_pub_version
+        shell: bash
+        run: |
+          pub global activate pubspec_version
+          echo "::set-output name=version::$(pubver get)"
+
+      - uses: release-drafter/release-drafter@v5
+        with:
+          publish: false
+          version: ${{ steps.get_pub_version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
