@@ -1,3 +1,7 @@
+## 1.0.4
+
+- Minor README change.
+
 ## 1.0.3
 
 - Add codecov.yml.

@@ -2,7 +2,7 @@ name: kana_kit
 description: >
   A Dart library for for detecting and transliterating
   Hiragana, Katakana, and Romaji.
-version: 1.0.3
+version: 1.0.3+1
 homepage: https://pub.dev/packages/kana_kit
 repository: https://github.com/jeroen-meijer/kana_kit
 
@@ -18,4 +18,3 @@ dev_dependencies:
   effective_dart: 1.2.3
   pedantic: 1.9.0
   test_coverage: 0.4.3
-  pubspec_version: 0.6.1+1

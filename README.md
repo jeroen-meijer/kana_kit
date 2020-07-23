@@ -15,7 +15,7 @@
   <a href="https://github.com/jeroen-meijer/kana_kit/actions?query=workflow%3Aci">
     <img
       alt="GitHub Workflow Status"
-      src="https://github.com/jeroen-meijer/kana_kit/workflows/ci/badge.svg"
+      src="https://img.shields.io/github/workflow/status/jeroen-meijer/kana_kit/ci?label=ci"
     />
   </a>
   <a href="https://github.com/jeroen-meijer/kana_kit/commits/"
