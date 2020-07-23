@@ -12,6 +12,12 @@
       alt="Codecov"
       src="https://img.shields.io/codecov/c/github/jeroen-meijer/kana_kit"
   /></a>
+  <a href="https://github.com/jeroen-meijer/kana_kit/actions?query=workflow%3Aci">
+    <img
+      alt="GitHub Workflow Status"
+      src="https://github.com/jeroen-meijer/kana_kit/workflows/ci/badge.svg"
+    />
+  </a>
   <a href="https://github.com/jeroen-meijer/kana_kit/commits/"
     ><img
       alt="GitHub last commit"
