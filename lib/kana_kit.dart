@@ -1,3 +1,5 @@
+/// A Dart library for handling and converting Japanese characters such as
+/// hiragana, katakana and kanji.
 library kana_kit;
 
 import 'package:kana_kit/kana_kit.dart';
