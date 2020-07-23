@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "Copy credentials"
           mkdir -p ~/.pub-cache
-          echo echo "$CREDENTIAL_JSON" > ~/.pub-cache/credentials.json 
+          echo "$CREDENTIAL_JSON" > ~/.pub-cache/credentials.json 
           echo "Run pub publish --force"
           pub publish --force
         env:
