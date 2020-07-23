@@ -1,4 +1,4 @@
-name: publish_to_pub
+name: Publish
 on:
   release:
     types: [published]
@@ -10,18 +10,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Publish to pub
-        id: publish
-        uses: k-paxian/dart-package-publisher@master
-        with:
-          skipTests: true
-          credentialJson: ${{ secrets.CREDENTIAL_JSON }}
-
-      - name: Verify published
+      - name: Publish
         run: |
-          if [ "${{steps.publish.outputs.success}}" = "false" ]; then
-            echo "Publishing failed."
-            exit 1
-          else
-            exit 0
-          fi
+          echo "Copy credentials"
+          mkdir -p ~/.pub-cache
+          echo echo "$CREDENTIAL_JSON" > ~/.pub-cache/credentials.json 
+          echo "Run pub publish --force"
+          pub publish --force
+        env:
+          CREDENTIAL_JSON: ${{ secrets.CREDENTIAL_JSON }}

@@ -1,5 +1,6 @@
-## 1.0.4
+## 1.0.3+2
 
+- Replace publishing CI step with custom script.
 - Minor README change.
 
 ## 1.0.3
@@ -19,6 +20,6 @@
 - Improved README.
 - Added pub publishing CD workflow.
 
-## [1.0.0
+## 1.0.0
 
 - Initial release 🎉

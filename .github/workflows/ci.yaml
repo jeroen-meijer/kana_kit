@@ -1,4 +1,4 @@
-name: ci
+name: CI
 on:
   workflow_dispatch:
   pull_request:
@@ -11,7 +11,8 @@ jobs:
     container:
       image: google/dart:2.8.4
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Install dependencies
         run: pub get
@@ -24,6 +25,16 @@ jobs:
 
       - name: Test
         run: pub run test_coverage
+
+      - name: Dry run publish
+        run: |
+          echo "Copy credentials"
+          mkdir -p ~/.pub-cache
+          echo echo "$CREDENTIAL_JSON" > ~/.pub-cache/credentials.json 
+          echo "Run pub publish --dry-run"
+          pub publish --dry-run
+        env:
+          CREDENTIAL_JSON: ${{ secrets.CREDENTIAL_JSON }}
 
       - name: Publish codecov
         shell: bash
