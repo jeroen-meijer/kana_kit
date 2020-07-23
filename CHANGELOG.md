@@ -1,3 +1,9 @@
+## 1.0.3+3
+
+- Add library level documentation comment.
+- Minor README change.
+- Move `test` dependency to `dev_dependencies`.
+
 ## 1.0.3+2
 
 - Add example.
