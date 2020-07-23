@@ -18,3 +18,4 @@ dev_dependencies:
   effective_dart: 1.2.3
   pedantic: 1.9.0
   test_coverage: 0.4.3
+  pubspec_version: 0.6.1+1
