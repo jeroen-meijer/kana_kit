@@ -1,3 +1,8 @@
+## 1.0.4
+
+- Upgrade package:equatable to 1.2.3
+- Fix dartdoc warnings caused by equatable.
+
 ## 1.0.3+3
 
 - Add library level documentation comment.
