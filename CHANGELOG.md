@@ -1,4 +1,4 @@
-## 1.1.0
+## 2.0.0
 
 - Add NNBD support.
 - Change minimum required Dart version to `2.12.0`.
