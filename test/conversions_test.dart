@@ -1,5 +1,4 @@
 import 'package:kana_kit/kana_kit.dart';
-import 'package:meta/meta.dart';
 import 'package:test/test.dart';
 
 import 'test_utils.dart';
