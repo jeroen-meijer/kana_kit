@@ -1,18 +1,17 @@
 import 'package:kana_kit/kana_kit.dart';
-import 'package:meta/meta.dart';
 import 'package:test/test.dart';
 
 import 'test_utils.dart';
 
 typedef Checker = bool Function(String input);
 typedef CheckerTest = void Function({
-  @required String input,
-  @required bool shouldPass,
+  required String input,
+  required bool shouldPass,
 });
 typedef CheckerAssertionTest = void Function(String input);
 
 CheckerTest checkerTest(Checker checker, String checkResultName) {
-  return ({input, shouldPass}) {
+  return ({required input, required shouldPass}) {
     return test(
       '${formatInput(input)} is ${!shouldPass ? 'NOT ' : ''}$checkResultName',
       () {
@@ -42,7 +41,6 @@ void main() {
     group('isRomaji', () {
       final throwsAssertionErrorWithInputIs =
           checkerAssertionTest(kanaKit.isRomaji);
-      throwsAssertionErrorWithInputIs(null);
       throwsAssertionErrorWithInputIs('');
 
       final the = checkerTest(kanaKit.isRomaji, 'romaji');
@@ -60,7 +58,6 @@ void main() {
     group('isJapanese', () {
       final throwsAssertionErrorWithInputIs =
           checkerAssertionTest(kanaKit.isJapanese);
-      throwsAssertionErrorWithInputIs(null);
       throwsAssertionErrorWithInputIs('');
 
       final the = checkerTest(kanaKit.isJapanese, 'japanese');
@@ -102,7 +99,6 @@ void main() {
     group('isKana', () {
       final throwsAssertionErrorWithInputIs =
           checkerAssertionTest(kanaKit.isKana);
-      throwsAssertionErrorWithInputIs(null);
       throwsAssertionErrorWithInputIs('');
 
       final the = checkerTest(kanaKit.isKana, 'kana');
@@ -116,7 +112,6 @@ void main() {
     group('isHiragana', () {
       final throwsAssertionErrorWithInputIs =
           checkerAssertionTest(kanaKit.isHiragana);
-      throwsAssertionErrorWithInputIs(null);
       throwsAssertionErrorWithInputIs('');
 
       final the = checkerTest(kanaKit.isHiragana, 'hiragana');
@@ -130,7 +125,6 @@ void main() {
     group('isKatakana', () {
       final throwsAssertionErrorWithInputIs =
           checkerAssertionTest(kanaKit.isKatakana);
-      throwsAssertionErrorWithInputIs(null);
       throwsAssertionErrorWithInputIs('');
 
       final the = checkerTest(kanaKit.isKatakana, 'katakana');
@@ -145,7 +139,6 @@ void main() {
     group('isKanji', () {
       final throwsAssertionErrorWithInputIs =
           checkerAssertionTest(kanaKit.isKanji);
-      throwsAssertionErrorWithInputIs(null);
       throwsAssertionErrorWithInputIs('');
 
       final the = checkerTest(kanaKit.isKanji, 'kanji');
@@ -165,7 +158,6 @@ void main() {
     group('isMixed', () {
       final throwsAssertionErrorWithInputIs =
           checkerAssertionTest(kanaKit.isMixed);
-      throwsAssertionErrorWithInputIs(null);
       throwsAssertionErrorWithInputIs('');
 
       group('(passKanji: true)', () {

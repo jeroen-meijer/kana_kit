@@ -1,6 +1,14 @@
+## 2.0.0
+
+- Add NNBD support.
+- Change minimum required Dart version to `2.12.0`.
+- Change linter to `package:very_good_analysis`.
+- Upgrade `package:equatable` to 2.0.0
+- Upgrade all dev dependencies.
+
 ## 1.0.4
 
-- Upgrade package:equatable to 1.2.3
+- Upgrade `package:equatable` to 1.2.3
 - Fix dartdoc warnings caused by equatable.
 
 ## 1.0.3+3

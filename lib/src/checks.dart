@@ -2,8 +2,8 @@ part of '../kana_kit.dart';
 
 bool _isCharInRange(
   String char, {
-  @required int start,
-  @required int end,
+  required int start,
+  required int end,
 }) {
   assert(char.length == 1);
 

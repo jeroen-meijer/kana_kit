@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 import 'package:kana_kit/kana_kit.dart';
 
@@ -13,13 +12,10 @@ import 'package:kana_kit/kana_kit.dart';
 class KanaKitConfig extends Equatable {
   /// {@macro kana_kit_config}
   const KanaKitConfig({
-    @required this.passRomaji,
-    @required this.passKanji,
-    @required this.upcaseKatakana,
-  })  : assert(passRomaji != null),
-        assert(passKanji != null),
-        assert(upcaseKatakana != null),
-        romanization = Romanization.hepburn;
+    required this.passRomaji,
+    required this.passKanji,
+    required this.upcaseKatakana,
+  }) : romanization = Romanization.hepburn;
 
   /// The default config for `KanaKit`.
   ///
@@ -73,9 +69,9 @@ class KanaKitConfig extends Equatable {
 
   /// Creates a copy of this object that replaces the provided fields.
   KanaKitConfig copyWith({
-    bool passRomaji,
-    bool passKanji,
-    bool upcaseKatakana,
+    bool? passRomaji,
+    bool? passKanji,
+    bool? upcaseKatakana,
   }) {
     return KanaKitConfig(
       passRomaji: passRomaji ?? this.passRomaji,

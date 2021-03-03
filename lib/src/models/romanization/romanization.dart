@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 part 'hepburn.dart';
 
@@ -10,12 +9,10 @@ part 'hepburn.dart';
 /// (https://en.wikipedia.org/wiki/Hepburn_romanization).
 class Romanization extends Equatable {
   const Romanization._({
-    @required this.name,
-    @required this.kanaToRomajiMap,
-    @required this.romajiToKanaMap,
-  })  : assert(name != null),
-        assert(kanaToRomajiMap != null),
-        assert(romajiToKanaMap != null);
+    required this.name,
+    required this.kanaToRomajiMap,
+    required this.romajiToKanaMap,
+  });
 
   /// The name of this Romanization.
   final String name;
@@ -29,7 +26,7 @@ class Romanization extends Equatable {
   /// The Hepburn romanization map. (https://en.wikipedia.org/wiki/Hepburn_romanization)
   static const hepburn = _hepburn;
 
-  /// Indicates if [this] is [Romanization.hepburn].
+  /// Indicates if this is [Romanization.hepburn].
   bool get isHepburn => this == hepburn;
 
   @override

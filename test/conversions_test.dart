@@ -1,19 +1,18 @@
 import 'package:kana_kit/kana_kit.dart';
-import 'package:meta/meta.dart';
 import 'package:test/test.dart';
 
 import 'test_utils.dart';
 
 typedef Converter = String Function(String input);
 typedef ConverterTest = void Function({
-  @required String input,
-  String shouldBecome,
-  String shouldNotBecome,
+  required String input,
+  String? shouldBecome,
+  String? shouldNotBecome,
 });
 typedef ConverterAssertionTest = void Function(String input);
 
 ConverterTest converterTest(Converter converter) {
-  return ({input, shouldBecome, shouldNotBecome}) {
+  return ({required input, shouldBecome, shouldNotBecome}) {
     if (shouldNotBecome != null) {
       final shouldChange = input == shouldNotBecome;
       return test(
@@ -57,10 +56,6 @@ void main() {
   const kanaKit = KanaKit();
   group('conversions', () {
     group('toRomaji', () {
-      final throwsAssertionErrorWithInputIs =
-          converterAssertionTest(kanaKit.toRomaji);
-      throwsAssertionErrorWithInputIs(null);
-
       group('(upcaseKatakana: false)', () {
         final the = converterTest(
           kanaKit.copyWithConfig(upcaseKatakana: false).toRomaji,
@@ -147,9 +142,6 @@ void main() {
       });
     });
     group('toKana', () {
-      final testToKanaAssertion = converterAssertionTest(kanaKit.toKana);
-      testToKanaAssertion(null);
-
       final the = converterTest(kanaKit.toKana);
       the(input: '', shouldBecome: '');
       the(input: '.', shouldBecome: '。');
@@ -176,10 +168,6 @@ void main() {
     });
 
     group('toHiragana', () {
-      final testToHiraganaAssertion =
-          converterAssertionTest(kanaKit.toHiragana);
-      testToHiraganaAssertion(null);
-
       group('(passRomaji: false)', () {
         final the = converterTest(
           kanaKit.copyWithConfig(passRomaji: false).toHiragana,
@@ -222,10 +210,6 @@ void main() {
     });
 
     group('toKatakana', () {
-      final testToKatakanaAssertion =
-          converterAssertionTest(kanaKit.toKatakana);
-      testToKatakanaAssertion(null);
-
       group('(passRomaji: false)', () {
         final the = converterTest(
           kanaKit.copyWithConfig(passRomaji: false).toKatakana,

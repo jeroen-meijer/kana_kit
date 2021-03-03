@@ -3,7 +3,7 @@ part of '../kana_kit.dart';
 /// Internal function that converts an a katakana [input] to hiragana.
 String _katakanaToHiragana(
   String input, {
-  @required String Function(String) toRomaji,
+  required String Function(String) toRomaji,
   bool destinationIsRomaji = false,
 }) {
   bool isCharInitialLongDash(String char, int index) {
@@ -56,7 +56,7 @@ String _katakanaToHiragana(
         hiraChars.add('お');
         continue;
       }
-      hiraChars.add(longVowels[romaji]);
+      hiraChars.add(longVowels[romaji]!);
       continue;
     } else if (!_isCharLongDash(char) && _isCharKatakana(char)) {
       // Shift charcode.
@@ -135,7 +135,7 @@ class _MappingParser {
     return _newChunk(input, 0);
   }
 
-  Map<String, dynamic> _nextSubtree(
+  Map<String, dynamic>? _nextSubtree(
     Map<String, dynamic> tree,
     String nextChar,
   ) {
@@ -165,12 +165,12 @@ class _MappingParser {
   }
 
   List<_CharacterConversionToken> _parse({
-    Map<String, dynamic> tree,
-    String remaining,
-    int lastCursor,
-    int currentCursor,
+    required Map<String, dynamic> tree,
+    required String remaining,
+    required int lastCursor,
+    required int currentCursor,
   }) {
-    final element = tree[''] as String;
+    final element = tree[''] as String?;
 
     if (remaining.isEmpty) {
       // nothing more to consume, just commit the last chunk and return it
@@ -184,7 +184,7 @@ class _MappingParser {
 
     if (tree.keys.length == 1) {
       return [
-        _CharacterConversionToken(lastCursor, currentCursor, element),
+        _CharacterConversionToken(lastCursor, currentCursor, element!),
         ..._newChunk(remaining, currentCursor),
       ];
     }
@@ -192,7 +192,7 @@ class _MappingParser {
     final subtree = _nextSubtree(tree, remaining.chars.first);
     if (subtree == null) {
       return [
-        _CharacterConversionToken(lastCursor, currentCursor, element),
+        _CharacterConversionToken(lastCursor, currentCursor, element!),
         ..._newChunk(remaining, currentCursor),
       ];
     }
