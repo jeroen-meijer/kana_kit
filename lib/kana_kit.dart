@@ -5,7 +5,6 @@ library kana_kit;
 import 'package:kana_kit/kana_kit.dart';
 import 'package:kana_kit/src/constants.dart';
 import 'package:kana_kit/src/utils.dart';
-import 'package:meta/meta.dart';
 
 export 'src/models/models.dart';
 
@@ -31,7 +30,7 @@ part 'src/checks.dart';
 class KanaKit {
   /// {@macro kana_kit}
   const KanaKit({
-    KanaKitConfig config,
+    KanaKitConfig? config,
   }) : config = config ?? KanaKitConfig.defaultConfig;
 
   /// The config used in certain conversions.
@@ -51,7 +50,6 @@ class KanaKit {
   /// isRomaji('a！b&cーd'); // false (zenkaku punctuation is not allowed)
   /// ```
   bool isRomaji(String input) {
-    assert(input != null);
     assert(input.isNotEmpty);
 
     return input.chars.every(_isCharRomaji);
@@ -70,7 +68,6 @@ class KanaKit {
   /// isJapanese('A泣き虫'); // false
   /// ```
   bool isJapanese(String input) {
-    assert(input != null);
     assert(input.isNotEmpty);
 
     return input.chars.every(_isCharJapanese);
@@ -88,7 +85,6 @@ class KanaKit {
   /// isKana('あAア'); // false
   /// ```
   bool isKana(String input) {
-    assert(input != null);
     assert(input.isNotEmpty);
 
     return input.chars.every(_isCharKana);
@@ -104,7 +100,6 @@ class KanaKit {
   /// isHiragana('あア'); // false
   /// ```
   bool isHiragana(String input) {
-    assert(input != null);
     assert(input.isNotEmpty);
 
     return input.chars.every(_isCharHiragana);
@@ -121,7 +116,6 @@ class KanaKit {
   /// isKatakana('あア'); // false
   /// ```
   bool isKatakana(String input) {
-    assert(input != null);
     assert(input.isNotEmpty);
 
     return input.chars.every(_isCharKatakana);
@@ -139,7 +133,6 @@ class KanaKit {
   /// isKanji('🐸'); // false
   /// ```
   bool isKanji(String input) {
-    assert(input != null);
     assert(input.isNotEmpty);
 
     return input.chars.every(_isCharKanji);
@@ -160,7 +153,6 @@ class KanaKit {
   /// isMixed('あア'); // false
   /// ```
   bool isMixed(String input) {
-    assert(input != null);
     assert(input.isNotEmpty);
 
     final chars = input.chars;
@@ -190,7 +182,6 @@ class KanaKit {
   /// toRomaji('げーむ　ゲーム'); // "ge-mu GEEMU"
   /// ```
   String toRomaji(String input) {
-    assert(input != null);
     if (input.isEmpty) {
       return input;
     }
@@ -212,7 +203,7 @@ class KanaKit {
           config.upcaseKatakana && isKatakana(input.substring(start, end));
 
       if (makeUpperCase) {
-        return romaji.toUpperCase();
+        return (romaji ?? '').toUpperCase();
       }
       return romaji;
     }).join();
@@ -234,7 +225,6 @@ class KanaKit {
   /// toKana('!?.:/,~-‘’“”[](){}'); // "！？。：・、〜ー「」『』［］（）｛｝"
   /// ```
   String toKana(String input) {
-    assert(input != null);
     if (input.isEmpty) {
       return input;
     }
@@ -268,7 +258,6 @@ class KanaKit {
   /// toHiragana('wi'); // "うぃ"
   /// ```
   String toHiragana(String input) {
-    assert(input != null);
     if (input.isEmpty) {
       return input;
     }
@@ -303,7 +292,6 @@ class KanaKit {
   /// toKatakana('wi'); // "ウィ"
   /// ```
   String toKatakana(String input) {
-    assert(input != null);
     if (input.isEmpty) {
       return input;
     }
@@ -329,9 +317,9 @@ class KanaKit {
   /// Creates a copy of this object that replaces the provided [KanaKitConfig]
   /// fields.
   KanaKit copyWithConfig({
-    bool passRomaji,
-    bool passKanji,
-    bool upcaseKatakana,
+    bool? passRomaji,
+    bool? passKanji,
+    bool? upcaseKatakana,
   }) {
     return KanaKit(
       config: KanaKitConfig(

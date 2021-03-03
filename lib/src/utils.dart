@@ -17,7 +17,7 @@ class Tuple<T1, T2> extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props => [left, right];
+  List<Object> get props => [left!, right!];
 }
 
 /// Extensions that make handling collections of [Tuple]s more convenient.
