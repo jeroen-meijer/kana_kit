@@ -115,7 +115,7 @@ class _CharacterConversionToken {
   final int end;
 
   /// The result of mapping the original `String` from [start] to [end].
-  final String? value;
+  final String value;
 }
 
 /// Internal helper class that can take the [root] mapping and apply it to the

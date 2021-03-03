@@ -203,8 +203,9 @@ class KanaKit {
           config.upcaseKatakana && isKatakana(input.substring(start, end));
 
       if (makeUpperCase) {
-        return (romaji ?? '').toUpperCase();
+        return romaji.toUpperCase();
       }
+
       return romaji;
     }).join();
   }
@@ -237,9 +238,6 @@ class KanaKit {
       final end = kanaToken.end;
       final kana = kanaToken.value;
 
-      if (kana == null) {
-        return input.substring(start);
-      }
       final enforceKatakana =
           input.substring(start, end).chars.every(_isCharUpperCase);
 
