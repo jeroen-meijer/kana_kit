@@ -56,6 +56,13 @@ String _katakanaToHiragana(
         hiraChars.add('お');
         continue;
       }
+      // Ensure 'ヮー' => 'ゎー' => 'waa'
+      if (previousKana == 'ゎ' && char == 'ー') {
+        hiraChars
+          ..removeLast()
+          ..addAll(['わ', 'あ']);
+        continue;
+      }
       hiraChars.add(longVowels[romaji]!);
       continue;
     } else if (!_isCharLongDash(char) && _isCharKatakana(char)) {
