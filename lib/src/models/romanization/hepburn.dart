@@ -6,6 +6,7 @@ part of 'romanization.dart';
 //            DO NOT EDIT
 // ---------------------------------
 
+// ignore: use_named_constants
 const _hepburn = Romanization._(
   name: 'Hepburn',
   kanaToRomajiMap: {

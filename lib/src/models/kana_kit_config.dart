@@ -15,7 +15,7 @@ class KanaKitConfig extends Equatable {
     required this.passRomaji,
     required this.passKanji,
     required this.upcaseKatakana,
-  }) : romanization = Romanization.hepburn;
+  });
 
   /// The default config for `KanaKit`.
   ///
@@ -65,7 +65,7 @@ class KanaKitConfig extends Equatable {
   /// ```dart
   /// romanization: Romanizaion.hepburn,
   /// ```
-  final Romanization romanization;
+  Romanization get romanization => Romanization.hepburn;
 
   /// Creates a copy of this object that replaces the provided fields.
   KanaKitConfig copyWith({

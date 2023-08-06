@@ -3,17 +3,17 @@
 echo "Running dartfmt..."
 dartfmt -w .
 echo "Running dartanalyzer..."
-dartanalyzer --fatal-infos --fatal-warnings lib test
+dart analyzer --fatal-infos --fatal-warnings lib test
 echo "Running codecov..."
 rm -rf ./coverage
-pub run test_coverage
+dart test --coverage=coverage
 lcov --remove ./coverage/lcov.info -o ./coverage/filtered.info\
   '**/*.g.dart' \
   'lib/src/models/romanization/**'
 genhtml -o coverage ./coverage/filtered.info
 open ./coverage/index.html
 echo "Running dry run publish..."
-pub publish --dry-run
+dart publish --dry-run
 
 echo ""
 echo "Done."

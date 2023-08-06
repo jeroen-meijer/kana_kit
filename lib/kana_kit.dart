@@ -50,7 +50,7 @@ class KanaKit {
   /// isRomaji('a！b&cーd'); // false (zenkaku punctuation is not allowed)
   /// ```
   bool isRomaji(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'empty input');
 
     return input.chars.every(_isCharRomaji);
   }
@@ -68,7 +68,7 @@ class KanaKit {
   /// isJapanese('A泣き虫'); // false
   /// ```
   bool isJapanese(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'empty input');
 
     return input.chars.every(_isCharJapanese);
   }
@@ -85,7 +85,7 @@ class KanaKit {
   /// isKana('あAア'); // false
   /// ```
   bool isKana(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'empty input');
 
     return input.chars.every(_isCharKana);
   }
@@ -100,7 +100,7 @@ class KanaKit {
   /// isHiragana('あア'); // false
   /// ```
   bool isHiragana(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'empty input');
 
     return input.chars.every(_isCharHiragana);
   }
@@ -116,7 +116,7 @@ class KanaKit {
   /// isKatakana('あア'); // false
   /// ```
   bool isKatakana(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'empty input');
 
     return input.chars.every(_isCharKatakana);
   }
@@ -133,7 +133,7 @@ class KanaKit {
   /// isKanji('🐸'); // false
   /// ```
   bool isKanji(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'empty input');
 
     return input.chars.every(_isCharKanji);
   }
@@ -153,12 +153,13 @@ class KanaKit {
   /// isMixed('あア'); // false
   /// ```
   bool isMixed(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'empty input');
 
     final chars = input.chars;
 
     final hasRomaji = chars.any(_isCharRomaji);
     final hasKana = chars.any(_isCharHiragana) || chars.any(_isCharKatakana);
+    // ignore: avoid_bool_literals_in_conditional_expressions
     final hasKanji = !(!config.passKanji ? chars.any(_isCharKanji) : false);
 
     return hasKana && hasRomaji && hasKanji;
