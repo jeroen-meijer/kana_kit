@@ -10,7 +10,7 @@ const romanization = Romanization.hepburn;
 void main() {
   group('KanaKitConfig', () {
     test('props are correct', () {
-      final actual = const KanaKitConfig(
+      final actual = KanaKitConfig(
         passRomaji: passRomaji,
         passKanji: passKanji,
         upcaseKatakana: upcaseKatakana,
@@ -28,7 +28,7 @@ void main() {
     group('constructor', () {});
     group('copyWith', () {
       test(
-        'returns same object with updated passRomaji'
+        'returns same object with updated passRomaji '
         'when passRomaji is provided',
         () {
           const initial = false;
@@ -49,7 +49,7 @@ void main() {
         },
       );
       test(
-        'returns same object with updated passKanji'
+        'returns same object with updated passKanji '
         'when passKanji is provided',
         () {
           const initial = true;
@@ -70,7 +70,7 @@ void main() {
         },
       );
       test(
-        'returns same object with updated upcaseKatakana'
+        'returns same object with updated upcaseKatakana '
         'when upcaseKatakana is provided',
         () {
           const initial = false;

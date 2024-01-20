@@ -7,20 +7,17 @@ String _katakanaToHiragana(
   bool destinationIsRomaji = false,
 }) {
   bool isCharInitialLongDash(String char, int index) {
-    assert(char.length == 1);
-
+    assert(char.length == 1, _charSingleDigitWarning);
     return _isCharLongDash(char) && index == 0;
   }
 
   bool isCharInnerLongDash(String char, int index) {
-    assert(char.length == 1);
-
+    assert(char.length == 1, _charSingleDigitWarning);
     return _isCharLongDash(char) && index > 0;
   }
 
   bool isKanaAsSymbol(String char) {
-    assert(char.length == 1);
-
+    assert(char.length == 1, _charSingleDigitWarning);
     return ['ヶ', 'ヵ'].contains(char);
   }
 
@@ -146,7 +143,10 @@ class _MappingParser {
     }
     // If the next child node does not have a node value, set its node value to
     // the input.
-    return {'': tree[''] + nextChar, ...tree[nextChar]};
+    final rootNode = tree[''] as String? ?? '';
+    final updatedRootNode = rootNode + nextChar;
+    final nextSubtree = tree[nextChar] as Map<String, dynamic>?;
+    return {'': updatedRootNode, ...nextSubtree ?? {}};
   }
 
   List<_CharacterConversionToken> _newChunk(
@@ -155,9 +155,9 @@ class _MappingParser {
   ) {
     // Start parsing a new chunk.
     final firstChar = remaining.chars.first;
-
+    final firstCharNode = root[firstChar] as Map<String, dynamic>?;
     return _parse(
-      tree: {'': firstChar, ...(root[firstChar] ?? {})},
+      tree: {'': firstChar, ...firstCharNode ?? {}},
       remaining: remaining.substring(1),
       lastCursor: currentCursor,
       currentCursor: currentCursor + 1,
