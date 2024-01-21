@@ -15,7 +15,8 @@ class KanaKitConfig extends Equatable {
     required this.passRomaji,
     required this.passKanji,
     required this.upcaseKatakana,
-  }) : romanization = Romanization.hepburn;
+    this.romanization = Romanization.hepburn,
+  });
 
   /// The default config for `KanaKit`.
   ///

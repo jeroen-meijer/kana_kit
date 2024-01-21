@@ -162,8 +162,8 @@ void main() {
       the(input: 'wi', shouldBecome: 'うぃ');
       the(input: 'WI', shouldBecome: 'ウィ');
       the(
-        input: 'ワニカニ AiUeO 鰐蟹 12345 @#\$%',
-        shouldBecome: 'ワニカニ　アいウえオ　鰐蟹　12345　@#\$%',
+        input: r'ワニカニ AiUeO 鰐蟹 12345 @#\$%',
+        shouldBecome: r'ワニカニ　アいウえオ　鰐蟹　12345　@#\$%',
       );
     });
 

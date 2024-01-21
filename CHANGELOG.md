@@ -1,3 +1,11 @@
+## 2.1.0
+- Change minimum required flutter sdk to `3.2.3`.
+- Change dartfmt to dart format.
+- Change dartanalyzer to dart analyzer.
+- Change test_coverage to coverage.
+- Fixed all lint warnings.
+- Upgrade all dev dependencies.
+
 ## 2.0.0
 
 - Add NNBD support.

@@ -1,19 +1,19 @@
 #!/bin/sh
 
-echo "Running dartfmt..."
-dartfmt -w .
-echo "Running dartanalyzer..."
-dartanalyzer --fatal-infos --fatal-warnings lib test
-echo "Running codecov..."
+echo "Running dart format..."
+dart format .
+echo "Running dart analyze..."
+dart analyze --fatal-infos --fatal-warnings lib test
+echo "Running coverage..."
 rm -rf ./coverage
-pub run test_coverage
+dart run coverage:test_with_coverage
 lcov --remove ./coverage/lcov.info -o ./coverage/filtered.info\
   '**/*.g.dart' \
   'lib/src/models/romanization/**'
 genhtml -o coverage ./coverage/filtered.info
 open ./coverage/index.html
 echo "Running dry run publish..."
-pub publish --dry-run
+dart pub publish --dry-run
 
 echo ""
 echo "Done."
