@@ -63,7 +63,14 @@ String _katakanaToHiragana(
           ..addAll(['わ', 'あ']);
         continue;
       }
-      hiraChars.add(longVowels[romaji]!);
+      // Try to get long vowel
+      final longVowel = longVowels[romaji];
+      // If it does not exist 'ー' is being used as a hyphen
+      if (longVowel != null) {
+        hiraChars.add(longVowel);
+      } else {
+        hiraChars.add('ー');
+      }
       continue;
     } else if (!_isCharLongDash(char) && _isCharKatakana(char)) {
       // Shift charcode.
