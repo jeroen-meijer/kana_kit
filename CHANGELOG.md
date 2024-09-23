@@ -7,6 +7,7 @@
 - Remove `package:equatable` dependency.
 - Upgrade dependencies.
 - Upgrade all dev dependencies and linter.
+- Remove Mergify config.
 
 ## 2.0.0
 
