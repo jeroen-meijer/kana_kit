@@ -1,7 +1,8 @@
 ## 2.0.0
 
 - Fix シークヮーサー and シマウヮー conversion edge-cases (thanks to @Moseco and @HighLiuk)
-- Change minimum required Dart version to `2.12.0`.
+- Change minimum required Dart version to `3.0.0`.
+- Add [FVM](https://fvm.app/) config.
 - Add CSpell spell checking config.
 - Remove `package:equatable` dependency.
 - Upgrade dependencies.
