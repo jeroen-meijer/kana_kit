@@ -1,10 +1,10 @@
 codecov:
   require_ci_to_pass: true
-  
+
 coverage:
   precision: 3
-  range: "99...100"
+  range: '99...100'
 
 ignore:
-  - "**/*.g.dart"
-  - "lib/src/models/romanization/**"
+  - '**/*.g.dart'
+  - 'lib/src/models/romanization/**'

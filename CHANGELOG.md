@@ -1,5 +1,14 @@
 ## 2.0.0
 
+- Fix シークヮーサー and シマウヮー conversion edge-cases (thanks to @Moseco and @HighLiuk)
+- Change minimum required Dart version to `2.12.0`.
+- Add CSpell spell checking config.
+- Remove `package:equatable` dependency.
+- Upgrade dependencies.
+- Upgrade all dev dependencies and linter.
+
+## 2.0.0
+
 - Add NNBD support.
 - Change minimum required Dart version to `2.12.0`.
 - Change linter to `package:very_good_analysis`.

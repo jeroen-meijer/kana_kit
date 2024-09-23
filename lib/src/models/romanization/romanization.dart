@@ -1,14 +1,20 @@
-import 'package:equatable/equatable.dart';
-
 part 'hepburn.dart';
 
-/// A class containing maps that indicates how to convert between kana
+/// An enum containing maps that indicates how to convert between kana
 /// characters and romaji.
 ///
-/// Currently only supports [hepburn]
+/// Currently only supports [hepburn].
 /// (https://en.wikipedia.org/wiki/Hepburn_romanization).
-class Romanization extends Equatable {
-  const Romanization._({
+enum Romanization {
+  /// The Hepburn romanization map. (https://en.wikipedia.org/wiki/Hepburn_romanization)
+  hepburn(
+    name: 'Hepburn',
+    kanaToRomajiMap: _hepburnKanaToRomajiMap,
+    romajiToKanaMap: _hepburnRomajiToKanaMap,
+  ),
+  ;
+
+  const Romanization({
     required this.name,
     required this.kanaToRomajiMap,
     required this.romajiToKanaMap,
@@ -23,15 +29,6 @@ class Romanization extends Equatable {
   /// The map that can be used to convert from romaji to kana.
   final Map<String, dynamic> romajiToKanaMap;
 
-  /// The Hepburn romanization map. (https://en.wikipedia.org/wiki/Hepburn_romanization)
-  static const hepburn = _hepburn;
-
-  /// Indicates if this is [Romanization.hepburn].
-  bool get isHepburn => this == hepburn;
-
   @override
-  String toString() => '$Romanization ($name)';
-
-  @override
-  List<Object> get props => [name];
+  String toString() => '$Romanization($name)';
 }

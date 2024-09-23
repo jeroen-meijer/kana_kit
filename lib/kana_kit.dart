@@ -50,7 +50,7 @@ class KanaKit {
   /// isRomaji('a！b&cーd'); // false (zenkaku punctuation is not allowed)
   /// ```
   bool isRomaji(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'input cannot be empty');
 
     return input.chars.every(_isCharRomaji);
   }
@@ -68,7 +68,7 @@ class KanaKit {
   /// isJapanese('A泣き虫'); // false
   /// ```
   bool isJapanese(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'input cannot be empty');
 
     return input.chars.every(_isCharJapanese);
   }
@@ -85,7 +85,7 @@ class KanaKit {
   /// isKana('あAア'); // false
   /// ```
   bool isKana(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'input cannot be empty');
 
     return input.chars.every(_isCharKana);
   }
@@ -100,7 +100,7 @@ class KanaKit {
   /// isHiragana('あア'); // false
   /// ```
   bool isHiragana(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'input cannot be empty');
 
     return input.chars.every(_isCharHiragana);
   }
@@ -116,7 +116,7 @@ class KanaKit {
   /// isKatakana('あア'); // false
   /// ```
   bool isKatakana(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'input cannot be empty');
 
     return input.chars.every(_isCharKatakana);
   }
@@ -133,7 +133,7 @@ class KanaKit {
   /// isKanji('🐸'); // false
   /// ```
   bool isKanji(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'input cannot be empty');
 
     return input.chars.every(_isCharKanji);
   }
@@ -153,12 +153,17 @@ class KanaKit {
   /// isMixed('あア'); // false
   /// ```
   bool isMixed(String input) {
-    assert(input.isNotEmpty);
+    assert(input.isNotEmpty, 'input cannot be empty');
 
     final chars = input.chars;
 
     final hasRomaji = chars.any(_isCharRomaji);
     final hasKana = chars.any(_isCharHiragana) || chars.any(_isCharKatakana);
+
+    // FIXME: This can be simplified but I can't get my brain
+    //  to do it right now.
+
+    // ignore: avoid_bool_literals_in_conditional_expressions
     final hasKanji = !(!config.passKanji ? chars.any(_isCharKanji) : false);
 
     return hasKana && hasRomaji && hasKanji;
@@ -173,6 +178,7 @@ class KanaKit {
   /// characters will be converted to uppercase characters.
   /// ignored.
   ///
+  // cspell: disable
   /// ```dart
   /// // With KanaKitConfig.upcaseKatakana == false (default)
   /// toRomaji('ひらがな　カタカナ'); // "hiragana katakana"
@@ -181,6 +187,7 @@ class KanaKit {
   /// toRomaji('ひらがな　カタカナ'); // "hiragana KATAKANA"
   /// toRomaji('げーむ　ゲーム'); // "ge-mu GEEMU"
   /// ```
+  // cspell: enable
   String toRomaji(String input) {
     if (input.isEmpty) {
       return input;
@@ -218,6 +225,7 @@ class KanaKit {
   /// The [input] `String` cannot be null. If an empty `String` is provided,
   /// an empty `String` will be returned immediately.
   ///
+  // cspell: disable
   /// ```dart
   /// toKana('onaji BUTTSUUJI'); // "おなじ ブッツウジ"
   /// toKana('ONAJI buttsuuji'); // "オナジ ぶっつうじ"
@@ -225,6 +233,7 @@ class KanaKit {
   /// toKana('batsuge-mu'); // "ばつげーむ"
   /// toKana('!?.:/,~-‘’“”[](){}'); // "！？。：・、〜ー「」『』［］（）｛｝"
   /// ```
+  // cspell: enable
   String toKana(String input) {
     if (input.isEmpty) {
       return input;

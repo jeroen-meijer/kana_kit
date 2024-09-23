@@ -1,3 +1,6 @@
+// cspell: disable
+
+import 'package:checks/checks.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:test/test.dart';
 
@@ -15,7 +18,12 @@ CheckerTest checkerTest(Checker checker, String checkResultName) {
     return test(
       '${formatInput(input)} is ${!shouldPass ? 'NOT ' : ''}$checkResultName',
       () {
-        expect(checker(input), shouldPass ? isTrue : isFalse);
+        final testCheck = check(checker(input));
+        if (shouldPass) {
+          testCheck.isTrue();
+        } else {
+          testCheck.isFalse();
+        }
       },
     );
   };
@@ -55,6 +63,7 @@ void main() {
       the(input: 'a！b&cーd', shouldPass: false);
       the(input: 'ｈｅｌｌｏ', shouldPass: false);
     });
+
     group('isJapanese', () {
       final throwsAssertionErrorWithInputIs =
           checkerAssertionTest(kanaKit.isJapanese);
@@ -96,6 +105,7 @@ void main() {
         shouldPass: true,
       );
     });
+
     group('isKana', () {
       final throwsAssertionErrorWithInputIs =
           checkerAssertionTest(kanaKit.isKana);
@@ -109,6 +119,7 @@ void main() {
       the(input: 'あAア', shouldPass: false);
       the(input: 'アーあ', shouldPass: true);
     });
+
     group('isHiragana', () {
       final throwsAssertionErrorWithInputIs =
           checkerAssertionTest(kanaKit.isHiragana);
@@ -122,6 +133,7 @@ void main() {
       the(input: 'あア', shouldPass: false);
       the(input: 'げーむ', shouldPass: true);
     });
+
     group('isKatakana', () {
       final throwsAssertionErrorWithInputIs =
           checkerAssertionTest(kanaKit.isKatakana);
@@ -155,6 +167,7 @@ void main() {
       the(input: '隻。', shouldPass: false);
       the(input: '🐸', shouldPass: false);
     });
+
     group('isMixed', () {
       final throwsAssertionErrorWithInputIs =
           checkerAssertionTest(kanaKit.isMixed);
@@ -176,6 +189,7 @@ void main() {
         the(input: 'あ', shouldPass: false);
         the(input: 'ア', shouldPass: false);
       });
+
       group('(passKanji: false)', () {
         final the = checkerTest(
           kanaKit.copyWithConfig(passKanji: false).isMixed,

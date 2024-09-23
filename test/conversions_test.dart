@@ -1,3 +1,6 @@
+// cspell: disable
+
+import 'package:checks/checks.dart';
 import 'package:kana_kit/kana_kit.dart';
 import 'package:test/test.dart';
 
@@ -13,28 +16,27 @@ typedef ConverterAssertionTest = void Function(String input);
 
 ConverterTest converterTest(Converter converter) {
   return ({required input, shouldBecome, shouldNotBecome}) {
-    if (shouldNotBecome != null) {
-      final shouldChange = input == shouldNotBecome;
-      return test(
-        shouldChange
-            ? '${formatInput(input)} should change'
-            : '${formatInput(input)} does NOT become '
-                '${formatInput(shouldNotBecome)}',
-        () {
-          expect(converter(input), isNot(shouldBecome));
-        },
-      );
-    } else {
-      final shouldNotChange = input == shouldBecome;
-      return test(
-        shouldNotChange
-            ? '${formatInput(input)} should return the same'
-            : '${formatInput(input)} becomes ${formatInput(shouldBecome)}',
-        () {
-          expect(converter(input), shouldBecome);
-        },
-      );
-    }
+    return switch ((shouldBecome, shouldNotBecome)) {
+      (final shouldBecome, _) when shouldBecome != null => test(
+          input == shouldBecome
+              ? '${formatInput(input)} should return the same'
+              : '${formatInput(input)} becomes ${formatInput(shouldBecome)}',
+          () {
+            check(converter(input)).equals(shouldBecome);
+          },
+        ),
+      (_, final shouldNotBecome) when shouldNotBecome != null => test(
+          input == shouldNotBecome
+              ? '${formatInput(input)} should change'
+              : '${formatInput(input)} does NOT become '
+                  '${formatInput(shouldNotBecome)}',
+          () {
+            check(converter(input)).not((it) => it.equals(shouldNotBecome));
+          },
+        ),
+      _ =>
+        throw ArgumentError('shouldBecome or shouldNotBecome must be provided'),
+    };
   };
 }
 
@@ -43,10 +45,7 @@ ConverterAssertionTest converterAssertionTest(Converter checker) {
     return test(
       'throws AssertionError when input is ${formatInput(input)}',
       () {
-        expect(
-          () => checker(input),
-          throwsA(isA<AssertionError>()),
-        );
+        check(() => checker(input)).throws<AssertionError>();
       },
     );
   };
@@ -60,6 +59,7 @@ void main() {
         final the = converterTest(
           kanaKit.copyWithConfig(upcaseKatakana: false).toRomaji,
         );
+
         the(input: '', shouldBecome: '');
         the(input: '.', shouldBecome: '.');
         the(input: 'hello', shouldBecome: 'hello');
@@ -97,11 +97,19 @@ void main() {
           the(input: 'んよ んあ んゆ', shouldBecome: "n'yo n'a n'yu");
           the(input: 'シンヨ', shouldBecome: "shin'yo");
         });
+
+        group('edge cases containing "ゎー" or "ヮー"', () {
+          the(input: 'しーくゎーさー', shouldBecome: 'shiikuwaasaa');
+          the(input: 'しまうゎー', shouldBecome: 'shimauwaa');
+          the(input: 'シークヮーサー', shouldBecome: 'shiikuwaasaa');
+          the(input: 'シマウヮー', shouldBecome: 'shimauwaa');
+        });
       });
       group('(upcaseKatakana: true)', () {
         final the = converterTest(
           kanaKit.copyWithConfig(upcaseKatakana: true).toRomaji,
         );
+
         the(input: '', shouldBecome: '');
         the(input: '.', shouldBecome: '.');
         the(input: 'hello', shouldBecome: 'hello');
@@ -143,6 +151,7 @@ void main() {
     });
     group('toKana', () {
       final the = converterTest(kanaKit.toKana);
+
       the(input: '', shouldBecome: '');
       the(input: '.', shouldBecome: '。');
       the(input: 'onaji', shouldBecome: 'おなじ');
@@ -162,8 +171,8 @@ void main() {
       the(input: 'wi', shouldBecome: 'うぃ');
       the(input: 'WI', shouldBecome: 'ウィ');
       the(
-        input: 'ワニカニ AiUeO 鰐蟹 12345 @#\$%',
-        shouldBecome: 'ワニカニ　アいウえオ　鰐蟹　12345　@#\$%',
+        input: r'ワニカニ AiUeO 鰐蟹 12345 @#$%',
+        shouldBecome: r'ワニカニ　アいウえオ　鰐蟹　12345　@#$%',
       );
     });
 
@@ -172,6 +181,7 @@ void main() {
         final the = converterTest(
           kanaKit.copyWithConfig(passRomaji: false).toHiragana,
         );
+
         the(input: '', shouldBecome: '');
         the(input: '.', shouldBecome: '。');
         the(input: 'wi', shouldBecome: 'うぃ');
@@ -214,6 +224,7 @@ void main() {
         final the = converterTest(
           kanaKit.copyWithConfig(passRomaji: false).toKatakana,
         );
+
         the(input: '', shouldBecome: '');
         the(input: 'ー', shouldBecome: 'ー');
         the(input: '.', shouldBecome: '。');
