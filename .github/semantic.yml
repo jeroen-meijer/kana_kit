@@ -1,0 +1,17 @@
+# Semantic PRs config file (https://github.com/Ezard/semantic-prs)
+
+enabled: true
+titleOnly: true
+allowRevertCommits: true
+types:
+  - feat
+  - fix
+  - chore
+  - ci
+  - docs
+  - refactor
+  - style
+  - test
+  - revert
+  - build
+  - release
