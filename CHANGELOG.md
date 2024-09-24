@@ -1,4 +1,4 @@
-## 2.0.0
+## 2.1.0
 
 - Fix シークヮーサー and シマウヮー conversion edge-cases (thanks to @Moseco and @HighLiuk)
 - Change minimum required Dart version to `3.0.0`.
