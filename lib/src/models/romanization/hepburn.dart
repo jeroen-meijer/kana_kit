@@ -1,10 +1,8 @@
 part of 'romanization.dart';
 
 // ------ HEPBURN ROMANIZATION -----
-// ---------------------------------
-// THIS FILE IS GENERATED (SORT OF)
-//            DO NOT EDIT
-// ---------------------------------
+
+// cspell: disable
 
 const _hepburnKanaToRomajiMap = {
   'あ': {'': 'a'},
@@ -200,6 +198,7 @@ const _hepburnKanaToRomajiMap = {
   },
   'ゔぇ': {'': 've'},
   'ゔぉ': {'': 'vo'},
+  'ゎ': {'': 'wa'},
   '。': {'': '.'},
   '、': {'': ','},
   '：': {'': ':'},
@@ -1085,7 +1084,10 @@ const _hepburnRomajiToKanaMap = {
       },
     },
     'w': {
-      'a': {'': 'ゎ'},
+      'a': {
+        '': 'ゎ',
+        'a': 'ゎー',
+      },
     },
     'k': {
       'a': {'': 'ヵ'},
@@ -1200,7 +1202,10 @@ const _hepburnRomajiToKanaMap = {
       },
     },
     'w': {
-      'a': {'': 'ゎ'},
+      'a': {
+        '': 'ゎ',
+        'a': 'ゎー',
+      },
     },
     'k': {
       'a': {'': 'ヵ'},

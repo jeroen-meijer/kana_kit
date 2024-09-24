@@ -99,8 +99,8 @@ void main() {
         });
 
         group('edge cases containing "ゎー" or "ヮー"', () {
-          the(input: 'しーくゎーさー', shouldBecome: 'shiikuwaasaa');
-          the(input: 'しまうゎー', shouldBecome: 'shimauwaa');
+          the(input: 'しーくゎーさー', shouldBecome: 'shi-kuwa-sa-');
+          the(input: 'しまうゎー', shouldBecome: 'shimauwa-');
           the(input: 'シークヮーサー', shouldBecome: 'shiikuwaasaa');
           the(input: 'シマウヮー', shouldBecome: 'shimauwaa');
         });
