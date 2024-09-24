@@ -24,7 +24,7 @@ jobs:
         run: dart analyze --fatal-infos --fatal-warnings lib test
 
       - name: Test
-        run: dart run test_coverage
+        run: dart run coverage:test_with_coverage
 
       - name: Dry run publish
         run: |
