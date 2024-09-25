@@ -7,19 +7,28 @@ String _katakanaToHiragana(
   bool destinationIsRomaji = false,
 }) {
   bool isCharInitialLongDash(String char, int index) {
-    assert(char.length == 1);
+    assert(
+      char.length == 1,
+      'char must be a single character',
+    );
 
     return _isCharLongDash(char) && index == 0;
   }
 
   bool isCharInnerLongDash(String char, int index) {
-    assert(char.length == 1);
+    assert(
+      char.length == 1,
+      'char must be a single character',
+    );
 
     return _isCharLongDash(char) && index > 0;
   }
 
   bool isKanaAsSymbol(String char) {
-    assert(char.length == 1);
+    assert(
+      char.length == 1,
+      'char must be a single character',
+    );
 
     return ['ヶ', 'ヵ'].contains(char);
   }
@@ -38,7 +47,7 @@ String _katakanaToHiragana(
   final hiraChars = <String>[];
   for (var index = 0; index < chars.length; index++) {
     final char = chars[index];
-    // Short circuit to avoid incorrect codeshift for 'ー' and '・'.
+    // Short circuit to avoid incorrect code shift for 'ー' and '・'.
     if (_isCharSlashDot(char) ||
         isCharInitialLongDash(char, index) ||
         isKanaAsSymbol(char)) {
@@ -56,7 +65,21 @@ String _katakanaToHiragana(
         hiraChars.add('お');
         continue;
       }
-      hiraChars.add(longVowels[romaji]!);
+      // Ensure 'ヮー' => 'ゎー' => 'waa'
+      if (previousKana == 'ゎ' && char == 'ー') {
+        hiraChars
+          ..removeLast()
+          ..addAll(['わ', 'あ']);
+        continue;
+      }
+      // Try to get long vowel
+      final longVowel = longVowels[romaji];
+      // If it does not exist 'ー' is being used as a hyphen
+      if (longVowel != null) {
+        hiraChars.add(longVowel);
+      } else {
+        hiraChars.add('ー');
+      }
       continue;
     } else if (!_isCharLongDash(char) && _isCharKatakana(char)) {
       // Shift charcode.
@@ -144,9 +167,13 @@ class _MappingParser {
     if (subtree == null) {
       return null;
     }
+
     // If the next child node does not have a node value, set its node value to
     // the input.
-    return {'': tree[''] + nextChar, ...tree[nextChar]};
+    return {
+      '': (tree[''] as String) + nextChar,
+      ...(tree[nextChar] as Map<String, dynamic>),
+    };
   }
 
   List<_CharacterConversionToken> _newChunk(
@@ -157,7 +184,10 @@ class _MappingParser {
     final firstChar = remaining.chars.first;
 
     return _parse(
-      tree: {'': firstChar, ...(root[firstChar] ?? {})},
+      tree: {
+        '': firstChar,
+        ...((root[firstChar] as Map<String, dynamic>?) ?? {}),
+      },
       remaining: remaining.substring(1),
       lastCursor: currentCursor,
       currentCursor: currentCursor + 1,

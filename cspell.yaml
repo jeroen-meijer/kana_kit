@@ -1,0 +1,20 @@
+ignoreWords:
+  - transform
+words:
+  - codecov
+  - hankaku
+  - hepburn
+  - HighLiuk
+  - hira
+  - initializers
+  - japanese
+  - Mergify
+  - Moseco
+  - NNBD
+  - Ōsaka
+  - pubspec
+  - romaji
+  - Tōkyō
+  - unicode
+  - zenkaku
+  - Zenkaku

@@ -7,5 +7,6 @@
     "mkdir",
     "toukyou",
     "ｚｅｎｋａｋｕ"
-  ]
+  ],
+  "dart.flutterSdkPath": ".fvm/versions/3.24.1"
 }

@@ -8,27 +8,27 @@ jobs:
   update_release_draft:
     runs-on: ubuntu-latest
     container:
-      image: google/dart:2.12.0
+      image: dart:3.5.0
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Install dependencies
-        run: pub get
+        run: dart pub get
 
       - name: Add pub executables to path
         run: echo "::add-path::$HOME/.pub-cache/bin"
 
       - name: Set pub version in env
         run: |
-          pub global activate pubspec_version
+          dart pub global activate pubspec_version
           echo "Current version is: $(pubver get)"
           echo "::set-env name=RELEASE_VERSION::$(pubver get)"
 
       - name: Create release draft
         uses: release-drafter/release-drafter@v5
         with:
-          publish: false
+       dart publish: false
           name: v${{ env.RELEASE_VERSION }}
           version: ${{ env.RELEASE_VERSION }}
           tag: ${{ env.RELEASE_VERSION }}

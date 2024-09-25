@@ -31,3 +31,6 @@ build/
 **/coverage/
 **/coverage_badge.svg
 **/.test_coverage.dart
+
+# FVM
+.fvm/
