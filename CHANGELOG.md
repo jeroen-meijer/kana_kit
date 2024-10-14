@@ -1,8 +1,8 @@
 ## 2.1.1
 
 - Loosen dependency version constraints for better compatibility (thanks to @narumi147 and @14h4i)
-  - `meta`: `^1.16.0` -> `^1.9.1`
-  - `collection`: `^1.19.0` -> `^1.17.1`
+  - `meta`: `^1.16.0` → `^1.9.1`
+  - `collection`: `^1.19.0` → `^1.17.1`
 
 ## 2.1.0
 
